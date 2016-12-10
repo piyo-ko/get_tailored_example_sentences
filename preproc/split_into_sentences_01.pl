@@ -3,87 +3,103 @@
 #
 # This script is intended to be used for Chinese or Japanese text.
 #
-# Usage: ./split_into_sentences_01.pl [-e characters_at_EoS] [-i characters_to_be_ignored] < input.txt > output.txt
+# Usage: ./split_into_sentences_01.pl [-e characters_at_EoS] [-s characters_at_SoS] [-i characters_to_be_ignored] < input.txt > output.txt
 # 
 
 use strict;
 use warnings;
 use utf8;
-use Encode 'decode', 'encode';
+binmode STDIN,  ":utf8";
+binmode STDOUT, ":utf8";
+binmode STDERR, ":utf8";
 
-# default settings for 
-#  * characters to be located at the end of a sentence; and
-#  * characters to be ignored
-my $specified_chars_at_EoS = '。．？！；：';
-my $specified_chars_to_be_ignored = '　「」“”『』';
+# the default set of characters that indicate the end of a sentence.
+my $chars_at_EoS = '。．？！；：」』”';
+# the default set of characters that explicitly indicate the start of 
+# a sentence.  Note that sentences may start with other ordinary characters.
+my $chars_at_SoS = '「『“';
+# the default set of character(s) that should be ignored and omitted.
+my $chars_to_be_ignored = '　';
 
 # check options
-my $err_msg = "Usage: ./split_into_sentences_01.pl [-e characters_at_EoS] [-i characters_to_be_ignored] < input.txt > output.txt\n";
-if ($#ARGV == -1) {
-  # use default settings
-} elsif ($#ARGV == 1) {
-  if ($ARGV[0] eq '-e') {
-    $specified_chars_at_EoS = $ARGV[1];
-  } elsif ($ARGV[0] eq '-i') {
-    $specified_chars_to_be_ignored = $ARGV[1];
-  } else {
-    die $err_msg;
+my $err_msg = "Usage: ./split_into_sentences_01.pl [-e characters_at_EoS] [-s characters_at_SoS] [-i characters_to_be_ignored] < input.txt > output.txt\n";
+my $a=0;
+while ($a < $#ARGV) {
+  if ($ARGV[$a] eq '-e') {
+    $chars_at_EoS = $ARGV[++$a];
+    $a++;
+    next;
   }
-} elsif ($#ARGV == 3) {
-  if ($ARGV[0] eq '-e' && $ARGV[2] eq '-i') {
-    $specified_chars_at_EoS = $ARGV[1];
-    $specified_chars_to_be_ignored = $ARGV[3];
-  } elsif ($ARGV[0] eq '-i' && $ARGV[2] eq '-e') {
-    $specified_chars_to_be_ignored = $ARGV[1];
-    $specified_chars_at_EoS = $ARGV[3];
-  } else {
-    die $err_msg;
+  if ($ARGV[$a] eq '-s') {
+    $chars_at_SoS = $ARGV[++$a];
+    $a++;
+    next;
   }
-} else {
+  if ($ARGV[$a] eq '-i') {
+    $chars_to_be_ignored = $ARGV[++$a];
+    $a++;
+    next;
+  }
   die $err_msg;
 }
 
-# set characters to be located at the end of a sentence
-#my @chars_at_EoS = split(//, $specified_chars_at_EoS);
-# set characters to be ignored
-#my @chars_to_be_ignored = split(//, $specified_chars_to_be_ignored);
-# set the next sentence ID number
-my $sentenceNo=1;
-
-=pod
 while(<STDIN>) {
   chomp;
-  my @sentences = split(/[$specified_chars_at_EoS]/, decode('utf-8', $_));
-  foreach my $s (@sentences) {
-    $s =~ s/^[$specified_chars_to_be_ignored]*(.+)[$specified_chars_to_be_ignored]*$/$1/;
-    my $id = sprintf("%06d", $sentenceNo++);
-    print STDOUT encode('utf-8', "$id\t$s\n");
-  }
-}
-=cut
-
-while(<STDIN>) {
-  chomp;
-  my @chars = split(//, decode('utf-8', $_));
+  my @chars = split(//, $_);
   my $sentence = '';
+  my $ready_to_output = 0;
   my $i=0;
   while ($i<=$#chars) {
-    if ($specified_chars_to_be_ignored =~ /$chars[$i]/) {
+    # If $chars[$i] belongs to $chars_to_be_ignored, ignore this $chars[$i].
+    if ($chars_to_be_ignored =~ /$chars[$i]/) {
       $i++;
       next;
-    } elsif ($specified_chars_at_EoS =~ /$chars[$i]/) {
-      my $id = sprintf("%06d", $sentenceNo++);
-      print STDOUT encode('utf-8', "$id\t$sentence$chars[$i]\n");
-      $sentence = '';  # re-initialization
+    }
+    # When encountering the special characters that can appear, in most cases, 
+    # only at the start of sentences, 
+    elsif ($chars_at_SoS =~ /$chars[$i]/) {
+      # output the previous sentence (if it exists) 
+      if ($sentence ne '') {
+        print STDOUT "$sentence\n";
+      }
+      # and then initialize the variables again for the next sentence.
+      $sentence = $chars[$i];
+      $ready_to_output = 0;
       $i++;
       next;
-    } else {
+    }
+    # When encountering the special characters that indicates the end of 
+    # the current sentence,
+    elsif ($chars_at_EoS =~ /$chars[$i]/) {
+      # append this $chars[$i] to $sentence and 
+      $sentence .= $chars[$i];
+      # set the flag $ready_to_output ON.
+      $ready_to_output = 1;
+      $i++;
+      next;
+      # Note that a sentence may end with a series of two or more such special
+      # characters indicating the end of sentence.  For example, a sentence 
+      # may end with '？」'.  Thus, $sentence is not output now but it will 
+      # be output later.
+    } 
+    # When encountering an ordinary character, which may appear at the start
+    # of a sentence or may appear in the middle of a sentence, 
+    else {
+      # first check whether there is a sentence to be output right now, and
+      # if so, output it and re-initialize the variables,
+      if ($ready_to_output == 1) {
+        print STDOUT "$sentence\n";
+        $sentence = '';
+        $ready_to_output = 0;
+      }
+      # and in any case, append the current $chars[$i] to $sentence.
       $sentence .= $chars[$i];
       $i++;
       next;
     }
   }
+  # If there remains a sentence that is not output yet, output it.
+  if ($sentence ne '') {
+    print STDOUT "$sentence\n";
+  }
 }
-
-#「出力から除く=無視する」かどうか、ではなくて、「(他の文の中に引用されて埋め込まれた文の文頭も含めて)文頭になり得る」かどうか、と、「文末になり得るかどうか」をチェックすべきかも。文末符号の連続はあり得るから（句点と鉤括弧）、次の文頭で前の文を出力すべき。
-#あと、文への分割スクリプトとナンバリングスクリプトは分けるべき(分ければ、間に手作業による修正を挟みたい場合に挟むことが可能となるから)。
