@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="filter_page.css" type="text/css">
+<base target="_top">
+<title>test of filtering</title>
+<script type="text/javascript" src="general_preprocess.js"></script>
+<script type="text/javascript" src="zh_filters.js"></script>
+</head>
+<body>
+<form name="f">
+<ol>
+<li>番号付き例文集合のファイルを選択して
+(<input type="file" id="input_txt_file" name="input_txt_file" />)、<br>
+そのファイルを<input type="button" value="読み込んで表示" onclick="read_in()" />する処理を行ってください。
+</li>
+
+<li>必要だったら、言語別のフォント設定にしてください。
+<input type="button" value="繁體中文" onclick="set_font('zh-Hant')" />
+<input type="button" value="简体中文" onclick="set_font('zh-Hant')" />
+<input type="button" value="日本語" onclick="set_font('ja')" />
+<input type="button" value="English" onclick="set_font('en')" />
+<input type="button" value="Русский" onclick="set_font('ru')" />
+</li>
+
+<li>文の長さ (文字数) を
+<input type="text" name="min_char_len" size="4" value="1" />文字以上
+<input type="text" name="max_char_len" size="4" value="1000" />文字以下に
+<input type="button" value="制限する" onclick="constrain_char_len()">
+こともできます。* ただし、「長さで制限した結果をさらに絞り込む」のか「改めて別のフィルタを新たに適用する」のかを選べるようにはなっていない。いずれ選べるようにしたい。
+</li>
+
+</ol>
+
+<p class="count">〘文の数=<span id="sentence_counter">?</span>〙</p>
+<p id="output_area" class="out"><!--この中を動的に書き換える--></p>
+
+<table>
+<tr>
+<th>中国語</th>
+<td>
+<select id="zh_filters">
+<option value="repetitive_question">反復疑問文</option>
+<option value="shi_de">「是〜的」</option>
+<option value="you_you">「又〜又〜」</option>
+<option value="yue_yue">「越〜越〜」</option>
+<option value="numerical">数値表現</option>
+<option value="passive">受け身</option>
+</select>
+</td>
+<td><input type="button" value="抽出する" onclick="call_filter_of('zh_filters')"></td>
+</tr>
+<!--
+<tr>
+<th>語</th>
+<td>
+<select name="_filters">
+<option value=""></option>
+<option value=""></option>
+<option value=""></option>
+</select>
+</td>
+<td><input type="button" value="抽出する" onclick="call_filter_of('_filters')"></td>
+</tr>
+-->
+</table>
+
+</form>
+</body>
+</html>
