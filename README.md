@@ -41,10 +41,9 @@ After that, assign ID numbers to the sentences in `split.txt` by running the scr
 $ preproc/numbering.pl < split.txt > formatted.txt
 ````
 
-## (3) Applying one or more filters / フィルタにか
-ける
+## (3) Applying one or more filters / フィルタにかける
 
-There are a small number of filters targetted on Chinese language.
+There are a small number of filters targetted to Chinese language.
 
 中国語用の少数のフィルタしか、まだできていません。
 
@@ -56,13 +55,19 @@ Command line-based filters all use standard input/output, and thus, they can be 
 $ filter/constrain_char_len.pl -min 5 -max 20 < formatted.txt | filter/zh/numerical.sh
 ````
 
-You may also use browser-based filters via `browser_ver/filter_test.html`, although the user interface of this is writtern in Japanese.
+You may also use browser-based filters via `browser_ver/filter_test.html`, although the user interface of this HTML file is currently writtern in Japanese only.
 
 `browser_ver/filter_test.html` を介してブラウザ版のフィルタを使うこともできます。
 
+The following image indicates an example where browser-based filters are applied to a file that has been created by obtaining the text data of the novel titled "在酒樓上" written by 魯迅 (Luxun), from [Wikisource](https://zh.wikisource.org/wiki/%E5%9C%A8%E9%85%92%E6%A8%93%E4%B8%8A),  preprocessing the data, manually correcting it, and assigning IDs to the sentencess.
+
+以下は、魯迅の「在酒樓上」という小説のテキストデータを[Wikisource](https://zh.wikisource.org/wiki/%E5%9C%A8%E9%85%92%E6%A8%93%E4%B8%8A)から取得して加工し、ブラウザ版のフィルタを使っている例です。
+
+![browser-based filters](data/screen.png)
+
 ## (4) Adding your filters as you need / 自分の必要に応じてフィルタを追加
 
-As you see in `filter/zh/*.sh` and `browser_ver/zh_filters.js`, only simple filters based on regular expressions are used.  It will be easy to add new filters as you like.
+As you will see in `filter/zh/*.sh` and `browser_ver/zh_filters.js`, only simple filters based on regular expressions are used.  It will be easy to add new filters as you like.
 
 `filter/zh/*.sh` や `browser_ver/zh_filters.js` のとおり、単純な正規表現フィルタを使っているだけなので、自分用のフィルタを追加するのは簡単だと思います。
 
