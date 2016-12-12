@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="filter_page.css" type="text/css">
+<base target="_top">
+<title>test of filtering</title>
+<script type="text/javascript" src="general_preprocess.js"></script>
+<script type="text/javascript" src="zh_filters.js"></script>
+</head>
+<body>
+<form name="f">
+<h1>複数の言語に共通する処理</h1>
+<ol>
+<li>番号付き例文集合のファイルを選択して
+(<input type="file" id="input_txt_file" name="input_txt_file" />)、<br>
+そのファイルを<input type="button" value="読み込んで表示" onclick="read_in()" />する処理を行ってください。
+</li>
+
+<li>必要だったら、言語別のフォント設定にしてください。
+<input type="button" value="繁體中文" onclick="set_font('zh-Hant')" />
+<input type="button" value="简体中文" onclick="set_font('zh-Hant')" />
+<input type="button" value="日本語" onclick="set_font('ja')" />
+<input type="button" value="English" onclick="set_font('en')" />
+<input type="button" value="Русский" onclick="set_font('ru')" />
+</li>
+
+<li>文の長さ (文字数) を
+<input type="text" name="min_char_len" size="4" value="1" />文字以上
+<input type="text" name="max_char_len" size="4" value="1000" />文字以下に
+<input type="button" value="制限する" onclick="constrain_char_len()">
+こともできます。* ただし、「長さで制限した結果をさらに絞り込む」のか「改めて別のフィルタを新たに適用する」のかを選べるようにはなっていない。いずれ選べるようにしたい。
+</li>
+<li>あるいは、文の長さ (単語数) を
+** 個以上
+** 個以下に
+制限する
+ことができるようにもしたい。
+</li>
+
+</ol>
+
+<p class="count">〘文の数=<span id="sentence_counter">?</span>〙</p>
+<p id="output_area" class="out"><!--この中を動的に書き換える--></p>
+
+
+<h1>中国語用フィルタ</h1>
+<p>
+<select id="zh_filters">
+<option value="repetitive_question">反復疑問文</option>
+<option value="shi_de">「是〜的」</option>
+<option value="you_you">「又〜又〜」</option>
+<option value="yue_yue">「越〜越〜」</option>
+<option value="numerical">数値表現</option>
+<option value="passive">受け身</option>
+</select>
+を
+<input type="button" value="抽出する" onclick="call_filter_of('zh_filters')">
+</p>
+
+<hr>
+<p>ここから先は、まだ動作しません! 入力フォームのみです!</p>
+
+<h1>ロシア語用フィルタ</h1>
+
+<div>
+<input type="button" value="人称代名詞を抽出する" onclick="">
+(ただし同形のもの同士は区別できません)
+
+<table class="in" lang="ru">
+<tr lang="ja"><th>主格</th><th>生格 (属格)</th><th>与格</th><th>対格</th><th>造格 (具格)</th><th>前置詞格</th></tr>
+<tr>
+<td><label for="1st_sg_nom"><input type="checkbox" id="1st_sg_nom" checked />я</label></td>
+<td><label for="1st_sg_gen"><input type="checkbox" id="1st_sg_gen" checked />меня</label></td>
+<td><label for="1st_sg_dat"><input type="checkbox" id="1st_sg_dat" checked />мне</label></td>
+<td><label for="1st_sg_acc"><input type="checkbox" id="1st_sg_acc" checked /></label>меня</td>
+<td><label for="1st_sg_inst"><input type="checkbox" id="1st_sg_inst" checked /></label>мной</td>
+<td><label for="1st_sg_prep"><input type="checkbox" id="1st_sg_prep" checked />мне</label></td>
+</tr>
+<tr>
+<td><label for="1st_pl_nom"><input type="checkbox" id="1st_pl_nom" checked />мы</label></td>
+<td><label for="1st_pl_gen"><input type="checkbox" id="1st_pl_gen" checked />нас</label></td>
+<td><label for="1st_pl_dat"><input type="checkbox" id="1st_pl_dat" checked />нам</label></td>
+<td><label for="1st_pl_acc"><input type="checkbox" id="1st_pl_acc" checked />нас</label></td>
+<td><label for="1st_pl_inst"><input type="checkbox" id="1st_pl_inst" checked />нами</label></td>
+<td><label for="1st_pl_prep"><input type="checkbox" id="1st_pl_prep" checked />нас</label></td>
+</tr>
+<tr>
+<td><label for="2nd_sg_nom"><input type="checkbox" id="2nd_sg_nom" checked />ты</label></td>
+<td><label for="2nd_sg_gen"><input type="checkbox" id="2nd_sg_gen" checked />тебя</label></td>
+<td><label for="2nd_sg_dat"><input type="checkbox" id="2nd_sg_dat" checked />тебе</label></td>
+<td><label for="2nd_sg_acc"><input type="checkbox" id="2nd_sg_acc" checked /></label>тебя</td>
+<td><label for="2nd_sg_inst"><input type="checkbox" id="2nd_sg_inst" checked /></label>тобой</td>
+<td><label for="2nd_sg_prep"><input type="checkbox" id="2nd_sg_prep" checked />тобою</label></td>
+</tr>
+<tr>
+<td><label for="2nd_pl_nom"><input type="checkbox" id="2nd_pl_nom" checked />вы</label></td>
+<td><label for="2nd_pl_gen"><input type="checkbox" id="2nd_pl_gen" checked />вас</label></td>
+<td><label for="2nd_pl_dat"><input type="checkbox" id="2nd_pl_dat" checked />вам</label></td>
+<td><label for="2nd_pl_acc"><input type="checkbox" id="2nd_pl_acc" checked />вас</label></td>
+<td><label for="2nd_pl_inst"><input type="checkbox" id="2nd_pl_inst" checked />вами</label></td>
+<td><label for="2nd_pl_prep"><input type="checkbox" id="2nd_pl_prep" checked />вас</label></td>
+</tr>
+<tr>
+<td><label for="3rd_m_sg_nom"><input type="checkbox" id="3rd_m_sg_nom" checked />он</label></td>
+<td><label for="3rd_m_sg_gen"><input type="checkbox" id="3rd_m_sg_gen" checked />его</label></td>
+<td><label for="3rd_m_sg_dat"><input type="checkbox" id="3rd_m_sg_dat" checked />ему</label></td>
+<td><label for="3rd_m_sg_acc"><input type="checkbox" id="3rd_m_sg_acc" checked />его</label></td>
+<td><label for="3rd_m_sg_inst"><input type="checkbox" id="3rd_m_sg_inst" checked />им</label></td>
+<td><label for="3rd_m_sg_prep"><input type="checkbox" id="3rd_m_sg_prep" checked />нём</label></td>
+</tr>
+<tr>
+<td><label for="3rd_f_sg_nom"><input type="checkbox" id="3rd_f_sg_nom" checked />она</label></td>
+<td><label for="3rd_f_sg_gen"><input type="checkbox" id="3rd_f_sg_gen" checked />её</label></td>
+<td><label for="3rd_f_sg_dat"><input type="checkbox" id="3rd_f_sg_dat" checked /></label>ей</td>
+<td><label for="3rd_f_sg_acc"><input type="checkbox" id="3rd_f_sg_acc" checked />её</label></td>
+<td><label for="3rd_f_sg_inst_1"><input type="checkbox" id="3rd_f_sg_inst_1" checked />ей</label> /
+<label for="3rd_f_sg_inst_2"><input type="checkbox" id="3rd_f_sg_inst_2" checked />ею</label></td>
+<td><label for="3rd_f_sg_prep"><input type="checkbox" id="3rd_f_sg_prep" checked />ней</label></td>
+</tr>
+<tr>
+<td><label for="3rd_n_sg_nom"><input type="checkbox" id="3rd_n_sg_nom" checked />оно</label></td>
+<td><label for="3rd_n_sg_gen"><input type="checkbox" id="3rd_n_sg_gen" checked />его</label></td>
+<td><label for="3rd_n_sg_dat"><input type="checkbox" id="3rd_n_sg_dat" checked />ему</label></td>
+<td><label for="3rd_n_sg_acc"><input type="checkbox" id="3rd_n_sg_acc" checked />его</label></td>
+<td><label for="3rd_n_sg_inst"><input type="checkbox" id="3rd_n_sg_inst" checked />им</label></td>
+<td><label for="3rd_n_sg_prep"><input type="checkbox" id="3rd_n_sg_prep" checked />нём</label></td>
+</tr>
+<tr>
+<td><label for="3rd_pl_nom"><input type="checkbox" id="3rd_pl_nom" checked />они</label></td>
+<td><label for="3rd_pl_gen"><input type="checkbox" id="3rd_pl_gen" checked /></label>их</td>
+<td><label for="3rd_pl_dat"><input type="checkbox" id="3rd_pl_dat" checked /></label>им</td>
+<td><label for="3rd_pl_acc"><input type="checkbox" id="3rd_pl_acc" checked /></label>их</td>
+<td><label for="3rd_pl_inst"><input type="checkbox" id="3rd_pl_inst" checked /></label>ими</td>
+<td><label for="3rd_pl_prep"><input type="checkbox" id="3rd_pl_prep" checked />них</label></td>
+</tr>
+</table>
+</div>
+
+<div>
+疑問詞を抽出する
+<!-- что主格, чего属格, чему与格, что対格, чем具格, чём前置詞格
+кто主格, кого属格, кому与格, кого対格, кем具格, ком前置詞格
+
+какой男性単数主格, какого男性単数属格, какому男性単数与格, какого男性単数対格, какой男性単数対格, каким男性単数具格, каком男性単数前置詞格, 
+какая女性単数主格, какой女性単数属格, какой女性単数与格, какую女性単数対格, какой女性単数具格, какой女性単数前置詞格, 
+какое中性単数主格, какого中性単数属格, какому中性単数与格, какое中性単数対格, каким中性単数具格, каком中性単数前置詞格, 
+какие複数主格, каких複数属格, каким複数与格, какие複数対格, каких複数対格, какими複数具格, каких複数前置詞格
+
+который男性単数主格, которого男性単数属格, которому男性単数与格, которого男性単数対格, который男性単数対格, которым男性単数具格, котором男性単数前置詞格, которая女性単数主格, которой女性単数属格, которой女性単数与格, которую女性単数対格, которой女性単数具格, которой女性単数前置詞格, которое中性単数主格, которого中性単数属格, которому中性単数与格, которое中性単数対格, которым中性単数具格, котором中性単数前置詞格, которые複数主格, которых複数属格, которым複数与格, которые複数対格, которых複数対格, которыми複数具格, которых複数前置詞格
+ -->
+</div>
+
+<div>
+前置詞を抽出する
+<!-- в
+за
+к
+на
+о
+от
+с
+у -->
+</div>
+
+<div>
+数値表現を抽出する
+</div>
+
+<!--
+<label for=""><input type="checkbox" id="" /></label>
+-->
+
+<!--
+<tr>
+<th>語</th>
+<td>
+<select name="_filters">
+<option value=""></option>
+<option value=""></option>
+<option value=""></option>
+</select>
+</td>
+<td><input type="button" value="抽出する" onclick="call_filter_of('_filters')"></td>
+</tr>
+-->
+</table>
+
+</form>
+</body>
+</html>
