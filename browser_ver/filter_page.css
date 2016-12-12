@@ -27,6 +27,8 @@ body {
 
 h1 {
   font-size: large;
+  color: hsl(270, 100%, 80%);
+  text-align: center;
 }
 select {
   background: hsl(210, 80%, 80%);
@@ -34,12 +36,20 @@ select {
   /*max-width: 15em;*/
 }
 table {
-  border-collapse: separate;
+  border-collapse: collapse;
+}
+table.in {
+  display: inline-block;
+  vertical-align: top;
 }
 th, td {
-  border: solid 1px green;
+  border: solid 1px hsl(210, 100%, 40%);
   text-align: center;
   padding: 4pt;
+}
+th {
+  font-weight: bold;
+  color: hsl(270, 100%, 80%);;
 }
 p {
   /*text-indent: 1em;*/
@@ -52,8 +62,6 @@ p.out {
   line-height: 150%;
   max-height: 20em;
   overflow: auto;
-  /*padding-left: 2em;
-  text-indent: -1em;*/
   padding-left: 1em;
   padding-right: 1em;
   border: solid 1px hsl(210, 100%, 80%);
@@ -68,4 +76,9 @@ em {
 .tag {
   color: hsl(160, 100%, 80%);
 }
-
+label, input[type='checkbox'] {
+  cursor: pointer;
+}
+input[type='checkbox'] {
+  margin-right: 1em;
+}
