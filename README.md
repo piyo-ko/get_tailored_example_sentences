@@ -29,6 +29,10 @@ Prepare a new file (e.g., `split.txt`) in which each line basically correspond t
 $ preproc/split_into_sentences_01.pl < orig.txt > split.txt
 ````
 
+If the target language is one of those languages that put whitespace characters between words, please use `split_into_sentences_02.pl` instead of `split_into_sentences_01.pl`.
+
+単語間に空白を置く言語なら、`split_into_sentences_01.pl` ではなく `split_into_sentences_02.pl` を使ってください。
+
 In addition, you may need to manually correct `split.txt` because the script may fail to perfectly format the input file.
 
 スクリプトは、文への分割が完璧にできるわけではないので、手作業で `split.txt` を多少修正する必要もあるかと思います。
