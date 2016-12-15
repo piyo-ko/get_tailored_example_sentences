@@ -13,9 +13,9 @@ There are some prototype tools only.  Some of them require bash and Perl, the ot
 
 # How do I get example sentences tailored for me? / どうやって自分向けの例文を取得するの?
 
-## (1) Getting a original text work / 元になるテキストを取得する
+## (1) Getting an original text work / 元になるテキストを取得する
 
-For example, you might find your interested text work at a page(s) of [Wikisource](https://en.wikisource.org) in the language that you want to learn.  You can copy the text body and paste it to an empty plain text file, for example, `orig.txt`.
+For example, you might find your interested text work at a page(s) of [Wikisource](https://en.wikisource.org) in the language that you want to learn.  You can copy the text body, paste it to an empty plain text file, and save the file as, for example, `orig.txt`.
 
 たとえば、自分が学習したい言語の[ウィキソース](https://ja.wikisource.org)から、興味のある文書をコピーして、テキストファイル (たとえば `orig.txt`) にペーストします。
 
@@ -33,13 +33,13 @@ If the target language is one of those languages that put whitespace characters 
 
 単語間に空白を置く言語なら、`split_into_sentences_01.pl` ではなく `split_into_sentences_02.pl` を使ってください。
 
-In addition, you may need to manually correct `split.txt` because the script may fail to perfectly format the input file.
+In some cases, it may be better to manually correct `split.txt` because the script may fail to perfectly format the input file.  However, such a manual correction step is not essential and thus omissible.
 
-スクリプトは、文への分割が完璧にできるわけではないので、手作業で `split.txt` を多少修正する必要もあるかと思います。
+スクリプトは、文への分割が完璧にできるわけではないので、手作業で `split.txt` を多少修正した方がよい場合もあるかと思います。ただ、必ずしもそのような手作業を行う必要はありません。
 
-After that, assign ID numbers to the sentences in `split.txt` by running the script as follows.  For details of available options, please see the script.
+After that, assign ID numbers to the sentences in `split.txt` by running the script as follows.  For details of available options, please see the script.  Assigning IDs will help you locate the context in which a particular sentence you are interested in is included, and read the context to check the precise meaning of the particular sentence.
 
-それから、以下のスクリプトを実行して、`split.txt` 中の文に番号を振ります (オプションについてはスクリプトを参照)。
+それから、以下のスクリプトを実行して、`split.txt` 中の文に番号を振ります (オプションについてはスクリプトを参照)。番号を振るのは、例文の置かれた文脈を確認したくなったときに文脈を突き止めやすくするためです。
 
 ````
 $ preproc/numbering.pl < split.txt > formatted.txt
@@ -59,9 +59,9 @@ Command line-based filters all use standard input/output, and thus, they can be 
 $ filter/constrain_char_len.pl -min 5 -max 20 < formatted.txt | filter/zh/numerical.sh
 ````
 
-You may also use browser-based filters via `browser_ver/filter_test.html`, although the user interface of this HTML file is currently writtern in Japanese only.
+You may also use browser-based filters via `browser_ver/filter.html`.
 
-`browser_ver/filter_test.html` を介してブラウザ版のフィルタを使うこともできます。
+`browser_ver/filter.html` を介してブラウザ版のフィルタを使うこともできます。
 
 The following image indicates an example where browser-based filters are applied to a file that has been created by obtaining the text data of the novel titled "在酒樓上" written by 魯迅 (Luxun), from [Wikisource](https://zh.wikisource.org/wiki/%E5%9C%A8%E9%85%92%E6%A8%93%E4%B8%8A),  preprocessing the data, manually correcting it, and assigning IDs to the sentencess.
 
