@@ -4,20 +4,38 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="filter_page.css" type="text/css">
 <base target="_top">
-<title>test of filtering</title>
+<title>Let's get your tailored example sentences for learning a foreign language! / 自分向けの例文を抽出しよう!</title>
 <script type="text/javascript" src="general_preprocess.js"></script>
 <script type="text/javascript" src="zh_filters.js"></script>
 </head>
 <body>
 <form name="f">
-<h1>複数の言語に共通する処理</h1>
+<p>User Interface: 
+<input type="button" value="日本語" onclick="set_UI_lang('ja')" />
+<input type="button" value="English" onclick="set_UI_lang('en')" />
+</p>
+
+<h1>
+<span class="ui" lang="ja">複数の言語に共通する処理</span>
+<span class="ui" lang="en">Steps common to multiple languages</span>
+</h1>
+
 <ol>
-<li>番号付き例文集合のファイルを選択して
-(<input type="file" id="input_txt_file" name="input_txt_file" />)、<br>
-そのファイルを<input type="button" value="読み込んで表示" onclick="read_in()" />する処理を行ってください。
+<li><span class="ui" lang="ja">番号付き例文集合のファイルを選択して</span>
+<span class="ui" lang="en">Select a file</span>
+(<input type="file" id="input_txt_file" name="input_txt_file" />) 
+<span class="ui" lang="ja">、そのファイルを</span>
+<span class="ui" lang="en">of a set of example sentences, each with its ID assigned, 
+ and then, </span>
+<input type="button" value="read and display" data-en-value="read and display" data-ja-value="読み込んで表示" onclick="read_in()" />
+<span class="ui" lang="ja">してください。</span>
+<span class="ui" lang="en">the file.</span>
 </li>
 
-<li>必要だったら、言語別のフォント設定にしてください。
+<li>
+<span class="ui" lang="ja">必要だったら、言語別のフォント設定にしてください。</span>
+<span class="ui" lang="en">You can change the font of the sentences to the one suitable to your target language.</span>
+
 <input type="button" value="繁體中文" onclick="set_font('zh-Hant')" />
 <input type="button" value="简体中文" onclick="set_font('zh-Hant')" />
 <input type="button" value="日本語" onclick="set_font('ja')" />
@@ -25,13 +43,21 @@
 <input type="button" value="Русский" onclick="set_font('ru')" />
 </li>
 
-<li>文の長さ (文字数) を
-<input type="text" name="min_char_len" size="4" value="1" />文字以上
-<input type="text" name="max_char_len" size="4" value="1000" />文字以下に
-<input type="button" value="制限する" onclick="constrain_char_len()">
-こともできます。* ただし、「長さで制限した結果をさらに絞り込む」のか「改めて別のフィルタを新たに適用する」のかを選べるようにはなっていない。いずれ選べるようにしたい。
+<li>
+<span class="ui" lang="ja">文の長さ (文字数) を</span>
+<span class="ui" lang="en">You can constrain the number of characters, as a measure of the length of a sentence, to be more than or equal to</span>
+<input type="text" name="min_char_len" size="4" value="1" />
+<span class="ui" lang="ja">文字以上</span>
+<span class="ui" lang="en">and less than or equal to</span>
+<input type="text" name="max_char_len" size="4" value="1000" />
+<span class="ui" lang="ja">文字以下に</span>
+<span class="ui" lang="en">.  </span>
+<input type="button" value="Try it!" data-en-value="Try it!" data-ja-value="制限する" onclick="constrain_char_len()">
+<span class="ui" lang="ja">こともできます。</span>
+<br>
+[TO DO] * ただし、「長さで制限した結果をさらに絞り込む」のか「改めて別のフィルタを新たに適用する」のかを選べるようにはなっていない。いずれ選べるようにしたい。
 </li>
-<li>あるいは、文の長さ (単語数) を
+<li>[TO DO] あるいは、文の長さ (単語数) を
 ** 個以上
 ** 個以下に
 制限する
@@ -40,35 +66,58 @@
 
 </ol>
 
-<p class="count">〘文の数=<span id="sentence_counter">?</span>〙</p>
+<p class="count">
+〘<span class="ui" lang="ja">文の数</span><span class="ui" lang="en">The number of sentences</span> = <span id="sentence_counter">?</span>〙
+<input type="button" value="Print"  data-en-value="Print" data-ja-value="印刷" onclick="window.print(); return(false);" /></p>
 <p id="output_area" class="out"><!--この中を動的に書き換える--></p>
 
+<hr>
+<h1>
+<span class="ui" lang="ja">中国語用フィルタ</span>
+<span class="ui" lang="en">Filters specific to Chinese</span>
+🎊
+</h1>
 
-<h1>中国語用フィルタ</h1>
 <p>
 <select id="zh_filters">
-<option value="repetitive_question">反復疑問文</option>
+<option value="repetitive_question" data-en-value="Repetitive questions" data-ja-value="反復疑問文">Repetitive questions</option>
+<option value="le">「了」</option>
 <option value="shi_de">「是〜的」</option>
 <option value="you_you">「又〜又〜」</option>
 <option value="yue_yue">「越〜越〜」</option>
-<option value="numerical">数値表現</option>
-<option value="passive">受け身</option>
+<option value="numerical" data-en-value="Numerical expressions" data-ja-value="数値表現">Numerical expressions</option>
+<option value="passive" data-en-value="Passive voice" data-ja-value="受け身">Passive voice</option>
 </select>
-を
-<input type="button" value="抽出する" onclick="call_filter_of('zh_filters')">
+<span class="ui" lang="ja">を</span>
+<span class="ui" lang="en">is/are to be</span>
+<input type="button" value="extracted" data-en-value="extracted" data-ja-value="抽出する" onclick="call_filter_of('zh_filters')">
+<span class="ui" lang="ja">。</span>
+<span class="ui" lang="en">.</span>
 </p>
 
 <hr>
-<p>ここから先は、まだ動作しません! 入力フォームのみです!</p>
 
-<h1>ロシア語用フィルタ</h1>
+<h1>
+<span class="ui" lang="ja">ロシア語用フィルタ</span>
+<span class="ui" lang="en">Filters specific to Russian</span>
+🎊
+</h1>
 
+<p>[TO DO] ここから先は、まだ動作しません! 入力フォームのみです!</p>
 <div>
 <input type="button" value="人称代名詞を抽出する" onclick="">
 (ただし同形のもの同士は区別できません)
 
 <table class="in" lang="ru">
-<tr lang="ja"><th>主格</th><th>生格 (属格)</th><th>与格</th><th>対格</th><th>造格 (具格)</th><th>前置詞格</th></tr>
+<tr>
+<th><span class="ui" lang="ja">主格</span><span class="ui" lang="en">nominative</span></th>
+<th><span class="ui" lang="ja">生格 (属格)</span><span class="ui" lang="en">genitive</span></th>
+<th><span class="ui" lang="ja">与格</span><span class="ui" lang="en">dative</span></th>
+<th><span class="ui" lang="ja">対格</span><span class="ui" lang="en">accusative</span></th>
+<th><span class="ui" lang="ja">造格 (具格)</span><span class="ui" lang="en">instrumental</span></th>
+<th><span class="ui" lang="ja">前置詞格</span><span class="ui" lang="en">prepositional</span></th>
+</tr>
+
 <tr>
 <td><label for="1st_sg_nom"><input type="checkbox" id="1st_sg_nom" checked />я</label></td>
 <td><label for="1st_sg_gen"><input type="checkbox" id="1st_sg_gen" checked />меня</label></td>

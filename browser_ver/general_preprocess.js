@@ -80,3 +80,36 @@ function call_filter_of(filter_set_name) {
   document.getElementById("output_area").innerHTML=str;
   reset_counter(c);
 }
+
+function set_UI_lang(lang_code) {
+  var i, j, attName;
+  attName = 'data-' + lang_code + '-value';
+  // for the text in <span class="ui" ...> tags
+  var UI_text_blocks = document.getElementsByClassName('ui');
+  for (i=0; i < UI_text_blocks.length; i++) {
+    if (UI_text_blocks[i].getAttribute('lang') == lang_code) {
+      UI_text_blocks[i].style.display = 'inline';
+    } else {
+      UI_text_blocks[i].style.display = 'none';
+    }
+  }
+  // for the text displayed on <input type="button" ...>
+  var buttons = document.getElementsByTagName('input');
+  for (i=0; i < buttons.length; i++) {
+    if (buttons[i].getAttribute('type') == 'button') {
+      if (buttons[i].hasAttribute(attName)) {
+        buttons[i].value = buttons[i].getAttribute(attName);
+      }
+    }
+  }
+  // for the text in <option> tags
+  var selectors = document.getElementsByTagName('select');
+  for (i=0; i < selectors.length; i++) {
+    for (j=0; j < selectors[i].options.length; j++) {
+      var op = selectors[i].options[j];
+      if (op.hasAttribute(attName)) {
+        op.textContent = op.getAttribute(attName);
+      }
+    }
+  }
+}

@@ -60,14 +60,18 @@ p.count {
 p.out {
   white-space: pre-wrap;
   line-height: 150%;
-  max-height: 20em;
-  overflow: auto;
   padding-left: 1em;
   padding-right: 1em;
   border: solid 1px hsl(210, 100%, 80%);
   margin-top: 0;
   margin-left: 2em;
   margin-right: 2em;
+}
+@media screen {
+  p.out {
+    max-height: 20em;
+    overflow: auto;
+  }
 }
 em {
   color: hsl(20, 100%, 70%);
@@ -81,4 +85,10 @@ label, input[type='checkbox'] {
 }
 input[type='checkbox'] {
   margin-right: 1em;
+}
+.ui:lang(ja) {
+  display: none;
+}
+.ui:lang(en) {
+  display: inline;
 }

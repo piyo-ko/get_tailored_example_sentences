@@ -44,3 +44,7 @@ function passive(idx) {
   return(sentences[idx].replace(/([被叫让譲讓])/g, "<em>$1</em>"));
 }
 
+/*「了」*/
+function le(idx)  {
+  return(sentences[idx].replace(/(了)/g, "<em>$1</em>"));
+}
