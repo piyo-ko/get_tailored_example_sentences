@@ -71,14 +71,14 @@
 <input type="button" value="Print"  data-en-value="Print" data-ja-value="印刷" onclick="window.print(); return(false);" /></p>
 <p id="output_area" class="out"><!--この中を動的に書き換える--></p>
 
-<hr>
 <h1>
 <span class="ui" lang="ja">中国語用フィルタ</span>
 <span class="ui" lang="en">Filters specific to Chinese</span>
-🎊
+<span class="toggle" onclick="hide_or_display('Chinese_block')">📘⇄📖</span>
 </h1>
-
+<div id="Chinese_block"style="display: none">
 <p>
+<span class="ui" lang="en">Let </span>
 <select id="zh_filters">
 <option value="repetitive_question" data-en-value="Repetitive questions" data-ja-value="反復疑問文">Repetitive questions</option>
 <option value="le">「了」</option>
@@ -89,20 +89,19 @@
 <option value="passive" data-en-value="Passive voice" data-ja-value="受け身">Passive voice</option>
 </select>
 <span class="ui" lang="ja">を</span>
-<span class="ui" lang="en">is/are to be</span>
+<span class="ui" lang="en"> be </span>
 <input type="button" value="extracted" data-en-value="extracted" data-ja-value="抽出する" onclick="call_filter_of('zh_filters')">
 <span class="ui" lang="ja">。</span>
 <span class="ui" lang="en">.</span>
 </p>
-
-<hr>
+</div>
 
 <h1>
 <span class="ui" lang="ja">ロシア語用フィルタ</span>
 <span class="ui" lang="en">Filters specific to Russian</span>
-🎊
+<span class="toggle" onclick="hide_or_display('Russian_block')">📘⇄📖</span>
 </h1>
-
+<div id="Russian_block" style="display: none">
 <p>[TO DO] ここから先は、まだ動作しません! 入力フォームのみです!</p>
 <div>
 <input type="button" value="人称代名詞を抽出する" onclick="">
@@ -215,25 +214,8 @@
 <div>
 数値表現を抽出する
 </div>
+</div>
 
-<!--
-<label for=""><input type="checkbox" id="" /></label>
--->
-
-<!--
-<tr>
-<th>語</th>
-<td>
-<select name="_filters">
-<option value=""></option>
-<option value=""></option>
-<option value=""></option>
-</select>
-</td>
-<td><input type="button" value="抽出する" onclick="call_filter_of('_filters')"></td>
-</tr>
--->
-</table>
 
 </form>
 </body>

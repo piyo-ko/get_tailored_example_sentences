@@ -113,3 +113,12 @@ function set_UI_lang(lang_code) {
     }
   }
 }
+
+function hide_or_display(divID) {
+	if (document.getElementById(divID).style.display=='none') {
+		document.getElementById(divID).style.display='block';
+	} else {
+		document.getElementById(divID).style.display='none';
+	}
+}
+

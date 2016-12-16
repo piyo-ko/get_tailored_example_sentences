@@ -92,3 +92,11 @@ input[type='checkbox'] {
 .ui:lang(en) {
   display: inline;
 }
+.toggle {
+  padding: 6pt;
+  border: solid 1px hsl(210, 100%, 80%);
+}
+.toggle:hover {
+  background: hsl(30, 100%, 20%);
+}
+
