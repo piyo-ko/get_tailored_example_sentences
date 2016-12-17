@@ -16,8 +16,7 @@ function read_in() {
 // Set the global variables and display all the sentences.
 function txt_loaded(e) {
   var lines = e.target.result.split('\n');
-  var str="";
-  for (var i=0; i<lines.length-1; i++) {
+  for (var i = 0, N = lines.length-1, str=""; i < N; i++) {
     var tmp=lines[i].split("\t");
     id_tags[i] = "<span class=\"tag\">" + tmp[0] + "</span>\t";
     sentences[i] = tmp[1];
@@ -47,9 +46,7 @@ function set_font(lang_name) {
 function constrain_char_len() {
   var min_len=parseInt(document.f.min_char_len.value);
   var max_len=parseInt(document.f.max_char_len.value);
-  var str="";
-  var c=0;
-  for (var i=0; i<sentences.length; i++) {
+  for (var i = 0, N = sentences.length, str = "", c = 0; i < N; i++) {
     var L=sentences[i].length;
     if (min_len <= L && L <= max_len) {
         str += (id_tags[i]  + sentences[i] + "\n");
@@ -63,14 +60,9 @@ function constrain_char_len() {
 // A wrapper function that is called in order to apply a language-
 // specific filter.
 function call_filter_of(filter_set_name) {
-  //console.log("filter_set_name=" + filter_set_name);
   var op_list = document.getElementById(filter_set_name);
   var filter_name = op_list.options[op_list.selectedIndex].value;
-  //console.log("filter_name=" + filter_name);
-  var str="";
-  var c=0;
-  for (var i=0; i<sentences.length; i++) {
-    //console.log("[" + sentences[i] + "]");
+  for (var i = 0, N = sentences.length, str = "", c = 0; i < N; i++) {
     var check_sentence_result = eval(filter_name + "(" + i + ")" );
     if (check_sentence_result !== sentences[i]) {
         str += (id_tags[i]  + check_sentence_result + "\n");
@@ -82,11 +74,11 @@ function call_filter_of(filter_set_name) {
 }
 
 function set_UI_lang(lang_code) {
-  var i, j, attName;
+  var i, j, Ni, Nj, attName;
   attName = 'data-' + lang_code + '-value';
   // for the text in <span class="ui" ...> tags
   var UI_text_blocks = document.getElementsByClassName('ui');
-  for (i=0; i < UI_text_blocks.length; i++) {
+  for (i = 0, Ni = UI_text_blocks.length; i < Ni; i++) {
     if (UI_text_blocks[i].getAttribute('lang') == lang_code) {
       UI_text_blocks[i].style.display = 'inline';
     } else {
@@ -95,7 +87,7 @@ function set_UI_lang(lang_code) {
   }
   // for the text displayed on <input type="button" ...>
   var buttons = document.getElementsByTagName('input');
-  for (i=0; i < buttons.length; i++) {
+  for (i = 0, Ni = buttons.length; i < Ni; i++) {
     if (buttons[i].getAttribute('type') == 'button') {
       if (buttons[i].hasAttribute(attName)) {
         buttons[i].value = buttons[i].getAttribute(attName);
@@ -104,8 +96,8 @@ function set_UI_lang(lang_code) {
   }
   // for the text in <option> tags
   var selectors = document.getElementsByTagName('select');
-  for (i=0; i < selectors.length; i++) {
-    for (j=0; j < selectors[i].options.length; j++) {
+  for (i = 0, Ni = selectors.length; i < Ni; i++) {
+    for (j = 0, Nj = selectors[i].options.length; j < Nj; j++) {
       var op = selectors[i].options[j];
       if (op.hasAttribute(attName)) {
         op.textContent = op.getAttribute(attName);
