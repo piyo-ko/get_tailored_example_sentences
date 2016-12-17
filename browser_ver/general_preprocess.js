@@ -61,7 +61,7 @@ COM_FUNC.constrain_char_len = function() {
     }
   }
   document.getElementById("output_area").innerHTML=str;
-  reset_counter(c);
+  COM_FUNC.reset_counter(c);
 };
 
 // A wrapper function that is called in order to apply a language-
@@ -77,7 +77,7 @@ COM_FUNC.call_filter_of = function(filter_set_name) {
     }
   }
   document.getElementById("output_area").innerHTML=str;
-  reset_counter(c);
+  COM_FUNC.reset_counter(c);
 };
 
 // Switch the user interface (UI) language.
