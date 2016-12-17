@@ -11,8 +11,8 @@
 <body>
 <form name="f">
 <p>User Interface: 
-<input type="button" value="日本語" onclick="set_UI_lang('ja')" />
-<input type="button" value="English" onclick="set_UI_lang('en')" />
+<input type="button" value="日本語" onclick="COM_FUNC.set_UI_lang('ja')" />
+<input type="button" value="English" onclick="COM_FUNC.set_UI_lang('en')" />
 </p>
 
 <h1>
@@ -27,7 +27,7 @@
 <span class="ui" lang="ja">、そのファイルを</span>
 <span class="ui" lang="en">of a set of example sentences, each with its ID assigned, 
  and then, </span>
-<input type="button" value="read and display" data-en-value="read and display" data-ja-value="読み込んで表示" onclick="read_in()" />
+<input type="button" value="read and display" data-en-value="read and display" data-ja-value="読み込んで表示" onclick="COM_FUNC.read_in()" />
 <span class="ui" lang="ja">してください。</span>
 <span class="ui" lang="en">the file.</span>
 </li>
@@ -36,11 +36,11 @@
 <span class="ui" lang="ja">必要だったら、言語別のフォント設定にしてください。</span>
 <span class="ui" lang="en">You can change the font of the sentences to the one suitable to your target language.</span>
 
-<input type="button" value="繁體中文" onclick="set_font('zh-Hant')" />
-<input type="button" value="简体中文" onclick="set_font('zh-Hant')" />
-<input type="button" value="日本語" onclick="set_font('ja')" />
-<input type="button" value="English" onclick="set_font('en')" />
-<input type="button" value="Русский" onclick="set_font('ru')" />
+<input type="button" value="繁體中文" onclick="COM_FUNC.set_font('zh-Hant')" />
+<input type="button" value="简体中文" onclick="COM_FUNC.set_font('zh-Hant')" />
+<input type="button" value="日本語" onclick="COM_FUNC.set_font('ja')" />
+<input type="button" value="English" onclick="COM_FUNC.set_font('en')" />
+<input type="button" value="Русский" onclick="COM_FUNC.set_font('ru')" />
 </li>
 
 <li>
@@ -52,7 +52,7 @@
 <input type="text" name="max_char_len" size="4" value="1000" />
 <span class="ui" lang="ja">文字以下に</span>
 <span class="ui" lang="en">.  </span>
-<input type="button" value="Try it!" data-en-value="Try it!" data-ja-value="制限する" onclick="constrain_char_len()">
+<input type="button" value="Try it!" data-en-value="Try it!" data-ja-value="制限する" onclick="COM_FUNC.constrain_char_len()">
 <span class="ui" lang="ja">こともできます。</span>
 <br>
 [TO DO] * ただし、「長さで制限した結果をさらに絞り込む」のか「改めて別のフィルタを新たに適用する」のかを選べるようにはなっていない。いずれ選べるようにしたい。
@@ -74,23 +74,22 @@
 <h1>
 <span class="ui" lang="ja">中国語用フィルタ</span>
 <span class="ui" lang="en">Filters specific to Chinese</span>
-<span class="toggle" onclick="hide_or_display('Chinese_block')">📘⇄📖</span>
+<span class="toggle" onclick="COM_FUNC.hide_or_display('Chinese_block')">📘⇄📖</span>
 </h1>
 <div id="Chinese_block"style="display: none">
 <p>
-<span class="ui" lang="en">Let </span>
+<span class="ui" lang="en">Get </span>
 <select id="zh_filters">
-<option value="ZH_repetitive_question" data-en-value="Repetitive questions" data-ja-value="反復疑問文">Repetitive questions</option>
-<option value="ZH_le">「了」</option>
-<option value="ZH_shi_de">「是〜的」</option>
-<option value="ZH_you_you">「又〜又〜」</option>
-<option value="ZH_yue_yue">「越〜越〜」</option>
-<option value="ZH_numerical" data-en-value="Numerical expressions" data-ja-value="数値表現">Numerical expressions</option>
-<option value="ZH_passive" data-en-value="Passive voice" data-ja-value="受け身">Passive voice</option>
+<option value="ZH.repetitive_question" data-en-value="Repetitive questions" data-ja-value="反復疑問文">Repetitive questions</option>
+<option value="ZH.le">「了」</option>
+<option value="ZH.shi_de">「是〜的」</option>
+<option value="ZH.you_you">「又〜又〜」</option>
+<option value="ZH.yue_yue">「越〜越〜」</option>
+<option value="ZH.numerical" data-en-value="Numerical expressions" data-ja-value="数値表現">Numerical expressions</option>
+<option value="ZH.passive" data-en-value="Passive voice" data-ja-value="受け身">Passive voice</option>
 </select>
 <span class="ui" lang="ja">を</span>
-<span class="ui" lang="en"> be </span>
-<input type="button" value="extracted" data-en-value="extracted" data-ja-value="抽出する" onclick="call_filter_of('zh_filters')">
+<input type="button" value="extracted" data-en-value="extracted" data-ja-value="抽出する" onclick="COM_FUNC.call_filter_of('zh_filters')">
 <span class="ui" lang="ja">。</span>
 <span class="ui" lang="en">.</span>
 </p>
@@ -99,12 +98,12 @@
 <h1>
 <span class="ui" lang="ja">ロシア語用フィルタ</span>
 <span class="ui" lang="en">Filters specific to Russian</span>
-<span class="toggle" onclick="hide_or_display('Russian_block')">📘⇄📖</span>
+<span class="toggle" onclick="COM_FUNC.hide_or_display('Russian_block')">📘⇄📖</span>
 </h1>
 <div id="Russian_block" style="display: none">
 <p>[TO DO] ここから先は、まだ動作しません! 入力フォームのみです!</p>
 <div>
-<input type="button" value="人称代名詞を抽出する" onclick="">
+<input type="button" value="人称代名詞を抽出する" onclick="COM_FUNC.">
 (ただし同形のもの同士は区別できません)
 
 <table class="in" lang="ru">
