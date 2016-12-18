@@ -87,54 +87,38 @@ COM_FUNC.constrain_num_of_chars = function() {
   var base_type = document.f.base_set.value;
   var min_len=parseInt(document.f.min_chars.value);
   var max_len=parseInt(document.f.max_chars.value);
-  var i, N, L, str, c;
+  var i, N, L, str, c, elem;
   N = DAT.sentences.length;
+  // If the number of characters of each sentence has not been counted yet,
+  // count and record it first.
+  if (!DAT.num_of_chars_has_been_counted) {
+    for (i = 0; i < N; i++) {
+      DAT.num_of_chars[i] = DAT.sentences[i].length;
+    }
+    DAT.num_of_chars_has_been_counted = true;
+  }
+  //
   str = "";
   c = 0;
+  // If the whole sentences are explicitly specified as the base, the new 
+  // base subset will be the subset to be obtained by the current application
+  // of this filter.
+  // If a set of length-limited sentences are specified as the base, such a
+  // designation is ignored and the new base subset will be the subset 
+  // to be obtained by the current application of this filter.
+  if (base_type == 'len_lim') {
+    alert("The target is set to be the whole sentences.");
+  }
   if (base_type == 'whole' || base_type == 'len_lim') {
     // In this case, the potential base subset is to be newly set.
     DAT.type_of_base_subset = 'length_limited';
-    
-    // ここから先、if と for の入れ子の順をどうするか、比較中。
-    // 意味的にはどっちでもいいんだが、読みやすさと速さの問題。
-    // トレードオフかな? でも大して変わらないような気もする。
-    if (DAT.num_of_chars_has_been_counted) {
-      for (i = 0; i < N; i++) {
-        L = DAT.num_of_chars[i];
-        if (min_len <= L && L <= max_len) {
-          str += (DAT.id_tags[i] + DAT.sentences[i] + "\n");
-          c++;
-          DAT.is_selected[i] = true;
-        } else {
-          DAT.is_selected[i] = false;
-        }
-        DAT.displayed_sentences[i] = '';
-      }
-    } else { // DAT.num_of_chars_has_been_counted is false
-      for (i = 0; i < N; i++) {
-        L = DAT.sentences[i].length;
-        if (min_len <= L && L <= max_len) {
-          str += (DAT.id_tags[i] + DAT.sentences[i] + "\n");
-          c++;
-          DAT.is_selected[i] = true;
-        } else {
-          DAT.is_selected[i] = false;
-        }
-        DAT.displayed_sentences[i] = '';
-      }
-      DAT.num_of_chars_has_been_counted = true;
-    }
-
-
-
+    elem = document.getElementById('use_length_limited_sentences');
+    elem.removeAttribute('disabled');
+    elem = document.getElementById('use_specific_pattern');
+    elem.setAttribute('disabled', 'disabled');
 
     for (i = 0; i < N; i++) {
-      if (DAT.num_of_chars_has_been_counted) {
-        L = DAT.num_of_chars[i];
-      } else {
-        L = DAT.sentences[i].length;
-        DAT.num_of_chars[i] = L;
-      }
+      L = DAT.num_of_chars[i];
       if (min_len <= L && L <= max_len) {
         str += (DAT.id_tags[i] + DAT.sentences[i] + "\n");
         c++;
@@ -144,15 +128,23 @@ COM_FUNC.constrain_num_of_chars = function() {
       }
       DAT.displayed_sentences[i] = '';
     }
-    DAT.num_of_chars_has_been_counted = true;
-
-
-
-  } else if (base_type == 'specific_pattern') {
-    // In this case, the potential base subset should not be changed.
-    
+  } else if (DAT.type_of_base_subset == 'pattern_specified' && 
+             base_type == 'specific_pattern') {
+    // If a set of sentences including a specific pattern has been set as
+    // the *potential* base subset and this is specified as the *actual* base
+    // subset to be used in this time, the base subset should be unchanged
+    // and this filter should be applied to this base subset.
+    for (i = 0; i < N; i++) {
+      if (DAT.is_selected[i]) { // a sentence including the specific pattern
+        L = DAT.num_of_chars[i];
+        if (min_len <= L && L <= max_len) {
+          str += (DAT.id_tags[i] + DAT.displayed_sentences[i] + "\n");
+          c++;
+        }
+      }
+    }
   } else {
-    alert("Oops! An error occurred at COM_FUNC.constrain_num_of_chars.");
+    alert("Oops! Something is wrong.\nAn error occurred at COM_FUNC.constrain_num_of_chars.");
   }
   document.getElementById("output_area").innerHTML=str;
   COM_FUNC.reset_counter(c);
@@ -164,17 +156,60 @@ COM_FUNC.constrain_num_of_chars = function() {
 // This is suitable for Russian, English, Germany, etc., which are written 
 // with whitespace characters between words.
 COM_FUNC.constrain_num_of_words = function() {
+  var base_type = document.f.base_set.value;
   var min_len = parseInt(document.f.min_words.value);
   var max_len = parseInt(document.f.max_words.value);
-  for (var i = 0, N = DAT.sentences.length, str = "", c = 0; i < N; i++) {
-    var w = DAT.sentences[i].split(/[—\-\s]+/);
-    for (var j = 0, L = w.length; j < L; j++) {
-      if (w[j] == "") { L--; }
+  var i, N, L, str, c, elem;
+  N = DAT.sentences.length;
+
+  if (!DAT.num_of_words_has_been_counted) {
+    for (i = 0; i < N; i++) {
+      var w = DAT.sentences[i].split(/[—\-\s]+/);
+      for (var j = 0, L = w.length; j < L; j++) {
+        if (w[j] == "") { L--; }
+      }
+      DAT.num_of_words[i] = L;
     }
-    if (min_len <= L && L <= max_len) {
-      str += (DAT.id_tags[i] + DAT.sentences[i] + "\n");
-      c++;
+    DAT.num_of_words_has_been_counted = true;
+  }
+
+  str = "";
+  c = 0;
+
+  if (base_type == 'len_lim') {
+    alert("The target is set to be the whole sentences.");
+  }
+  if (base_type == 'whole' || base_type == 'len_lim') {
+    DAT.type_of_base_subset = 'length_limited';
+    elem = document.getElementById('use_length_limited_sentences');
+    elem.removeAttribute('disabled');
+    elem = document.getElementById('use_specific_pattern');
+    elem.setAttribute('disabled', 'disabled');
+
+    for (i = 0; i < N; i++) {
+      L = DAT.num_of_words[i];
+      if (min_len <= L && L <= max_len) {
+        str += (DAT.id_tags[i] + DAT.sentences[i] + "\n");
+        c++;
+        DAT.is_selected[i] = true;
+      } else {
+        DAT.is_selected[i] = false;
+      }
+      DAT.displayed_sentences[i] = '';
     }
+  } else if (DAT.type_of_base_subset == 'pattern_specified' && 
+             base_type == 'specific_pattern') {
+    for (i = 0; i < N; i++) {
+      if (DAT.is_selected[i]) { 
+        L = DAT.num_of_words[i];
+        if (min_len <= L && L <= max_len) {
+          str += (DAT.id_tags[i] + DAT.displayed_sentences[i] + "\n");
+          c++;
+        }
+      }
+    }
+  } else {
+    alert("Oops! Something is wrong.\nAn error occurred at COM_FUNC.constrain_num_of_chars.");
   }
   document.getElementById("output_area").innerHTML=str;
   COM_FUNC.reset_counter(c);
