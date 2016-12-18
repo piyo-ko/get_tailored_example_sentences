@@ -46,20 +46,20 @@
 <li>
 <span class="ui" lang="ja">文の長さ (文字数) を</span>
 <span class="ui" lang="en">You can constrain the number of characters, as a measure of the length of a sentence, to be more than or equal to</span>
-<input type="text" name="min_char_len" size="4" value="1" />
+<input type="text" name="min_chars" size="4" value="1" />
 <span class="ui" lang="ja">文字以上</span>
 <span class="ui" lang="en">and less than or equal to</span>
-<input type="text" name="max_char_len" size="4" value="1000" />
+<input type="text" name="max_chars" size="4" value="1000" />
 <span class="ui" lang="ja">文字以下に</span>
 <span class="ui" lang="en">.  </span>
-<input type="button" value="Try it!" data-en-value="Try it!" data-ja-value="制限する" onclick="COM_FUNC.constrain_char_len()">
+<input type="button" value="Try it!" data-en-value="Try it!" data-ja-value="制限する" onclick="COM_FUNC.constrain_num_of_chars()">
 <span class="ui" lang="ja">こともできます。</span>
 <br>
 [TO DO] * ただし、「長さで制限した結果をさらに絞り込む」のか「改めて別のフィルタを新たに適用する」のかを選べるようにはなっていない。いずれ選べるようにしたい。
 </li>
 <li>
 <span class="ui" lang="ja">単語間に空白を置く言語の場合は、文の長さ (単語数) を</span>
-<span class="ui" lang="en">For languages written with white space characters between words, you can constrain the number of words, as a measure of the length of a sentence, to be more than or equal to</span>
+<span class="ui" lang="en">For languages written with whitespace characters between words, you can constrain the number of words, as a measure of the length of a sentence, to be more than or equal to</span>
 <input type="text" name="min_words" size="4" value="1" />
 <span class="ui" lang="ja">個以上</span>
 <span class="ui" lang="en">and less than or equal to</span>
@@ -91,7 +91,7 @@
 <label for="use_specific_pattern">
 <input type="radio" name="base_set" value="specific_pattern" id="use_specific_pattern" disabled />
 <span class="ui" lang="ja">フィルタで直近に抽出済みの特定の表現を含む文</span>
-<span class="ui" lang="en">sentences including a specific pattern that has last been extracted by a filter</span>
+<span class="ui" lang="en">sentences including the specific pattern that has last been extracted by the filter you selected</span>
 </label>
 
 </p>
@@ -108,7 +108,7 @@
 </h1>
 <div id="Chinese_block"style="display: none">
 <p>
-<span class="ui" lang="en">Get </span>
+<span class="ui" lang="en">Let </span>
 <select id="zh_filters">
 <option value="ZH.repetitive_question" data-en-value="repetitive questions" data-ja-value="反復疑問文">repetitive questions</option>
 <option value="ZH.le">「了」</option>
@@ -119,6 +119,7 @@
 <option value="ZH.passive" data-en-value="passive voice" data-ja-value="受け身">passive voice</option>
 </select>
 <span class="ui" lang="ja">を</span>
+<span class="ui" lang="en">be </span>
 <input type="button" value="extracted" data-en-value="extracted" data-ja-value="抽出する" onclick="COM_FUNC.call_filter_of('zh_filters')">
 <span class="ui" lang="ja">。</span>
 <span class="ui" lang="en">.</span>

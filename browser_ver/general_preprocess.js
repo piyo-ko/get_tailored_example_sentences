@@ -1,29 +1,41 @@
 "use strict";
 
-// a global Object to hold IDs and sentences read from a specified file
+// a global Object to hold IDs and sentences read from a specified file,
+// as well as holding auxiliary data.
 var DAT = {
   // sentence IDs, each with a <span> tag and a tab character
   id_tags : [],
   // sentences included in a specified file
   sentences : [],
-  //
+  // is_selected[i] is true if sentences[i] has been selected, by a filter, 
+  // as an element of a potential base subset which may be used as a base of
+  // a narrowing down operation to be done by another filter.
   is_selected : [],
+  // If type_of_base_subset as defined below is 'pattern_specified' and 
+  // is_selected[i] is true, then displayed_sentences[i] is a string that
+  // corresponds to sentences[i] and includes an <em> tag; otherwise,
+  // is_selected[i] is an empty string.  
   displayed_sentences : [],
-  type_of_prev_filter: 'none',
+  // the type of the potential base subset ('none', 'length_limited', or 
+  // 'pattern_specified')
+  type_of_base_subset: 'none',
+  // Once the number of words/characters of sentences[i] has been counted, 
+  // it will be recorded for the later use.
   num_of_words : [],
   num_of_chars : [],
-  num_of_words_counted : false,
-  num_of_chars_counted : false, 
+  num_of_words_has_been_counted : false,
+  num_of_chars_has_been_counted : false, 
+  // When a new file is specified to be read, reset_all() should be executed.
   reset_all : function () {
     this.id_tags = [];
     this.sentences = [];
     this.is_selected = [];
     this.displayed_sentences = [];
-    this.type_of_prev_filter = 'none';
+    this.type_of_base_subset = 'none';
     this.num_of_words = [];
     this.num_of_chars = [];
-    this.num_of_words_counted = false;
-    this.num_of_chars_counted = false;
+    this.num_of_words_has_been_counted = false;
+    this.num_of_chars_has_been_counted = false;
   }
 };
 
@@ -48,21 +60,20 @@ COM_FUNC.txt_loaded = function(e) {
     var tmp=lines[i].split("\t");
     DAT.id_tags[i] = "<span class=\"tag\">" + tmp[0] + "</span>\t";
     DAT.sentences[i] = tmp[1];
-    DAT.is_selected[i] = true;
-    DAT.displayed_sentences = tmp[1];
     str += (DAT.id_tags[i] + DAT.sentences[i] + "\n");
   }
   document.getElementById("output_area").innerHTML=str;
   COM_FUNC.reset_counter(N);
 };
 
-// Reset the text counter.
+// Re-set the text counter.
 COM_FUNC.reset_counter = function(c) {
   document.getElementById("sentence_counter").textContent = c;
 };
 
 // Set the font used for the example sentences, depending on 
-// the language of them.
+// the language of them.  Note that filter_page.css defines some language-
+// dependent fonts.
 COM_FUNC.set_font = function(lang_name) {
   document.getElementById("output_area").lang = lang_name;
 };
@@ -70,22 +81,88 @@ COM_FUNC.set_font = function(lang_name) {
 // A somewhat general filter applicable to multiple languages.
 // Constrain the length of sentences, which is counted by the number 
 // of characters.
-// This is suitable for the Chinese or Japanese text, which are written 
-// without white space characters between words.
-COM_FUNC.constrain_char_len = function() {
-  var min_len=parseInt(document.f.min_char_len.value);
-  var max_len=parseInt(document.f.max_char_len.value);
-  for (var i = 0, N = DAT.sentences.length, str = "", c = 0; i < N; i++) {
-    var L=DAT.sentences[i].length;
-    if (min_len <= L && L <= max_len) {
+// This is suitable for Chinese or Japanese text, which are written 
+// without whitespace characters between words.
+COM_FUNC.constrain_num_of_chars = function() {
+  var base_type = document.f.base_set.value;
+  var min_len=parseInt(document.f.min_chars.value);
+  var max_len=parseInt(document.f.max_chars.value);
+  var i, N, L, str, c;
+  N = DAT.sentences.length;
+  str = "";
+  c = 0;
+  if (base_type == 'whole' || base_type == 'len_lim') {
+    // In this case, the potential base subset is to be newly set.
+    DAT.type_of_base_subset = 'length_limited';
+    
+    // ここから先、if と for の入れ子の順をどうするか、比較中。
+    // 意味的にはどっちでもいいんだが、読みやすさと速さの問題。
+    // トレードオフかな? でも大して変わらないような気もする。
+    if (DAT.num_of_chars_has_been_counted) {
+      for (i = 0; i < N; i++) {
+        L = DAT.num_of_chars[i];
+        if (min_len <= L && L <= max_len) {
+          str += (DAT.id_tags[i] + DAT.sentences[i] + "\n");
+          c++;
+          DAT.is_selected[i] = true;
+        } else {
+          DAT.is_selected[i] = false;
+        }
+        DAT.displayed_sentences[i] = '';
+      }
+    } else { // DAT.num_of_chars_has_been_counted is false
+      for (i = 0; i < N; i++) {
+        L = DAT.sentences[i].length;
+        if (min_len <= L && L <= max_len) {
+          str += (DAT.id_tags[i] + DAT.sentences[i] + "\n");
+          c++;
+          DAT.is_selected[i] = true;
+        } else {
+          DAT.is_selected[i] = false;
+        }
+        DAT.displayed_sentences[i] = '';
+      }
+      DAT.num_of_chars_has_been_counted = true;
+    }
+
+
+
+
+    for (i = 0; i < N; i++) {
+      if (DAT.num_of_chars_has_been_counted) {
+        L = DAT.num_of_chars[i];
+      } else {
+        L = DAT.sentences[i].length;
+        DAT.num_of_chars[i] = L;
+      }
+      if (min_len <= L && L <= max_len) {
         str += (DAT.id_tags[i] + DAT.sentences[i] + "\n");
         c++;
+        DAT.is_selected[i] = true;
+      } else {
+        DAT.is_selected[i] = false;
+      }
+      DAT.displayed_sentences[i] = '';
     }
+    DAT.num_of_chars_has_been_counted = true;
+
+
+
+  } else if (base_type == 'specific_pattern') {
+    // In this case, the potential base subset should not be changed.
+    
+  } else {
+    alert("Oops! An error occurred at COM_FUNC.constrain_num_of_chars.");
   }
   document.getElementById("output_area").innerHTML=str;
   COM_FUNC.reset_counter(c);
 };
 
+// A similar general filter applicable to multiple languages.
+// Constrain the length of sentences, which is counted by the number 
+// of words.
+// This is suitable for Russian, English, Germany, etc., which are written 
+// with whitespace characters between words.
 COM_FUNC.constrain_num_of_words = function() {
   var min_len = parseInt(document.f.min_words.value);
   var max_len = parseInt(document.f.max_words.value);
