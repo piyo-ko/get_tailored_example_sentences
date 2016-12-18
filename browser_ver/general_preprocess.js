@@ -5,7 +5,26 @@ var DAT = {
   // sentence IDs, each with a <span> tag and a tab character
   id_tags : [],
   // sentences included in a specified file
-  sentences : []
+  sentences : [],
+  //
+  is_selected : [],
+  displayed_sentences : [],
+  type_of_prev_filter: 'none',
+  num_of_words : [],
+  num_of_chars : [],
+  num_of_words_counted : false,
+  num_of_chars_counted : false, 
+  reset_all : function () {
+    this.id_tags = [];
+    this.sentences = [];
+    this.is_selected = [];
+    this.displayed_sentences = [];
+    this.type_of_prev_filter = 'none';
+    this.num_of_words = [];
+    this.num_of_chars = [];
+    this.num_of_words_counted = false;
+    this.num_of_chars_counted = false;
+  }
 };
 
 // Create a quasi-namespace for general common functions,
@@ -23,11 +42,14 @@ COM_FUNC.read_in = function() {
 // This is called from COM_FUNC.read_in().
 // Set the values in DAT, and display all the sentences.
 COM_FUNC.txt_loaded = function(e) {
+  DAT.reset_all();
   var lines = e.target.result.split('\n');
   for (var i = 0, N = lines.length-1, str=""; i < N; i++) {
     var tmp=lines[i].split("\t");
     DAT.id_tags[i] = "<span class=\"tag\">" + tmp[0] + "</span>\t";
     DAT.sentences[i] = tmp[1];
+    DAT.is_selected[i] = true;
+    DAT.displayed_sentences = tmp[1];
     str += (DAT.id_tags[i] + DAT.sentences[i] + "\n");
   }
   document.getElementById("output_area").innerHTML=str;
@@ -58,6 +80,23 @@ COM_FUNC.constrain_char_len = function() {
     if (min_len <= L && L <= max_len) {
         str += (DAT.id_tags[i] + DAT.sentences[i] + "\n");
         c++;
+    }
+  }
+  document.getElementById("output_area").innerHTML=str;
+  COM_FUNC.reset_counter(c);
+};
+
+COM_FUNC.constrain_num_of_words = function() {
+  var min_len = parseInt(document.f.min_words.value);
+  var max_len = parseInt(document.f.max_words.value);
+  for (var i = 0, N = DAT.sentences.length, str = "", c = 0; i < N; i++) {
+    var w = DAT.sentences[i].split(/[—\-\s]+/);
+    for (var j = 0, L = w.length; j < L; j++) {
+      if (w[j] == "") { L--; }
+    }
+    if (min_len <= L && L <= max_len) {
+      str += (DAT.id_tags[i] + DAT.sentences[i] + "\n");
+      c++;
     }
   }
   document.getElementById("output_area").innerHTML=str;

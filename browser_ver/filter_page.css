@@ -67,6 +67,12 @@ p.out {
   margin-left: 2em;
   margin-right: 2em;
 }
+p.box {
+  border: solid 1px hsl(270, 100%, 80%);
+  padding: 4pt;
+  margin-left: 2em;
+  margin-right: 2em;
+}
 @media screen {
   p.out {
     max-height: 20em;
@@ -94,9 +100,9 @@ input[type='checkbox'] {
 }
 .toggle {
   padding: 6pt;
-  border: solid 1px hsl(210, 100%, 80%);
+  border: solid 1px hsl(30, 100%, 40%);
 }
 .toggle:hover {
-  background: hsl(30, 100%, 20%);
+  background: hsl(30, 100%, 13%);
 }
 
