@@ -219,7 +219,7 @@ COM_FUNC.constrain_num_of_words = function() {
 // specific filter.
 COM_FUNC.call_filter_of = function(f_name, is_filter_in_listbox) {
   var filter_name;
-  var em_tag = /<em>/;
+  const em_tag = /<em>/;
   if (is_filter_in_listbox) {
     var op_list = document.getElementById(f_name);
     filter_name = op_list.options[op_list.selectedIndex].value;
@@ -228,7 +228,7 @@ COM_FUNC.call_filter_of = function(f_name, is_filter_in_listbox) {
   }
   for (var i = 0, N = DAT.sentences.length, str = "", c = 0; i < N; i++) {
     var check_sentence_result = eval(filter_name + "(" + i + ")" );
-    if (check_sentence_result !== DAT.sentences[i]) {
+    if (em_tag.test(check_sentence_result)) {
         str += (DAT.id_tags[i] + check_sentence_result + "\n");
         c++;
     }
@@ -237,8 +237,8 @@ COM_FUNC.call_filter_of = function(f_name, is_filter_in_listbox) {
   COM_FUNC.reset_counter(c);
 };
 
-// Get an array of values of the checked checkboxes included in the element 
-// whose id attribute is group_element_id.
+// Get an array of the value attribute of the checked checkboxes included 
+// in the element whose id attribute is group_element_id.
 // This can be used to extract the sentences that match any one of the 
 // words/prefixes/suffixes/phrases being selected (i.e., checked by checkboxes) 
 // from among listed ones.
@@ -252,7 +252,16 @@ COM_FUNC.get_checked_values = function(group_element_id) {
     }
   }
   return(keywords);
-}
+};
+
+// Check or uncheck multiple checkboxes at once, where checkbox_ids is 
+// an array of the id attributes of the checkboxes and check_or_uncheck is
+// a boolean value.
+COM_FUNC.set_at_once = function(checkbox_ids, check_or_uncheck) {
+  for (var i = 0, N = checkbox_ids.length; i < N; i++) {
+    document.getElementById(checkbox_ids[i]).checked = check_or_uncheck;
+  }
+};
 
 // Switch the user interface (UI) language.
 COM_FUNC.set_UI_lang = function(lang_code) {

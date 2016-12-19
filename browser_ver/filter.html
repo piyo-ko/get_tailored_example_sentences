@@ -133,22 +133,38 @@
 <span class="toggle" onclick="COM_FUNC.hide_or_display('Russian_block')">📘⇄📖</span>
 </h1>
 <div id="Russian_block" style="display: none">
-<p>[TO DO] ここから先は、まだ動作しません! 入力フォームのみです!</p>
+
 <div>
 <input type="button" value="人称代名詞を抽出する" onclick="COM_FUNC.call_filter_of('RU.pronouns',false)">
 (ただし同形のもの同士は区別できません)
 
 <table class="in" lang="ru" id="ru_pronouns">
 <tr>
-<th><span class="ui" lang="ja">主格</span><span class="ui" lang="en">nominative</span></th>
-<th><span class="ui" lang="ja">生格 (属格)</span><span class="ui" lang="en">genitive</span></th>
-<th><span class="ui" lang="ja">与格</span><span class="ui" lang="en">dative</span></th>
-<th><span class="ui" lang="ja">対格</span><span class="ui" lang="en">accusative</span></th>
-<th><span class="ui" lang="ja">造格 (具格)</span><span class="ui" lang="en">instrumental</span></th>
-<th><span class="ui" lang="ja">前置詞格</span><span class="ui" lang="en">prepositional</span></th>
+<th></th>
+<th><span class="ui" lang="ja">主格</span><span class="ui" lang="en">nominative</span><br>
+<input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['1st_sg_nom','1st_pl_nom','2nd_sg_nom','2nd_pl_nom','3rd_m_sg_nom','3rd_f_sg_nom','3rd_n_sg_nom','3rd_pl_nom'],true)" /><br>
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['1st_sg_nom','1st_pl_nom','2nd_sg_nom','2nd_pl_nom','3rd_m_sg_nom','3rd_f_sg_nom','3rd_n_sg_nom','3rd_pl_nom'],false)" /></th>
+<th><span class="ui" lang="ja">生格 (属格)</span><span class="ui" lang="en">genitive</span><br>
+<input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['1st_sg_gen','1st_pl_gen','2nd_sg_gen','2nd_pl_gen','3rd_m_sg_gen','3rd_f_sg_gen','3rd_n_sg_gen','3rd_pl_gen'],true)" /><br>
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['1st_sg_gen','1st_pl_gen','2nd_sg_gen','2nd_pl_gen','3rd_m_sg_gen','3rd_f_sg_gen','3rd_n_sg_gen','3rd_pl_gen'],false)" /></th>
+<th><span class="ui" lang="ja">与格</span><span class="ui" lang="en">dative</span><br>
+<input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['1st_sg_dat','1st_pl_dat','2nd_sg_dat','2nd_pl_dat','3rd_m_sg_dat','3rd_f_sg_dat','3rd_n_sg_dat','3rd_pl_dat'],true)" /><br>
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['1st_sg_dat','1st_pl_dat','2nd_sg_dat','2nd_pl_dat','3rd_m_sg_dat','3rd_f_sg_dat','3rd_n_sg_dat','3rd_pl_dat'],false)" /></th>
+<th><span class="ui" lang="ja">対格</span><span class="ui" lang="en">accusative</span><br>
+<input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['1st_sg_acc','1st_pl_acc','2nd_sg_acc','2nd_pl_acc','3rd_m_sg_acc','3rd_f_sg_acc','3rd_n_sg_acc','3rd_pl_acc'],true)" /><br>
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['1st_sg_acc','1st_pl_acc','2nd_sg_acc','2nd_pl_acc','3rd_m_sg_acc','3rd_f_sg_acc','3rd_n_sg_acc','3rd_pl_acc'],false)" /></th>
+<th><span class="ui" lang="ja">造格 (具格)</span><span class="ui" lang="en">instrumental</span><br>
+<input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['1st_sg_inst','1st_pl_inst','2nd_sg_inst','2nd_pl_inst','3rd_m_sg_inst','3rd_f_sg_inst_1','3rd_f_sg_inst_2','3rd_n_sg_inst','3rd_pl_inst'],true)" /><br>
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['1st_sg_inst','1st_pl_inst','2nd_sg_inst','2nd_pl_inst','3rd_m_sg_inst','3rd_f_sg_inst_1','3rd_f_sg_inst_2','3rd_n_sg_inst','3rd_pl_inst'],false)" /></th>
+<th><span class="ui" lang="ja">前置詞格</span><span class="ui" lang="en">prepositional</span><br>
+<input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['1st_sg_prep','1st_pl_prep','2nd_sg_prep','2nd_pl_prep','3rd_m_sg_prep','3rd_f_sg_prep','3rd_n_sg_prep','3rd_pl_prep'],true)" /><br>
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['1st_sg_prep','1st_pl_prep','2nd_sg_prep','2nd_pl_prep','3rd_m_sg_prep','3rd_f_sg_prep','3rd_n_sg_prep','3rd_pl_prep'],false)" /></th>
 </tr>
 
 <tr>
+<td><input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['1st_sg_nom','1st_sg_gen','1st_sg_dat','1st_sg_acc','1st_sg_inst','1st_sg_prep'],true)" />
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['1st_sg_nom','1st_sg_gen','1st_sg_dat','1st_sg_acc','1st_sg_inst','1st_sg_prep'],false)" />
+</td>
 <td><input type="checkbox" id="1st_sg_nom" value="я" checked />
 <label for="1st_sg_nom">я</label></td>
 <td><input type="checkbox" id="1st_sg_gen" value="меня" checked />
@@ -163,103 +179,124 @@
 <label for="1st_sg_prep">мне</label></td>
 </tr>
 <tr>
-<td><input type="checkbox" id="1st_pl_nom" value="" checked />
+<td><input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['1st_pl_nom','1st_pl_gen','1st_pl_dat','1st_pl_acc','1st_pl_inst','1st_pl_prep'],true)" />
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['1st_pl_nom','1st_pl_gen','1st_pl_dat','1st_pl_acc','1st_pl_inst','1st_pl_prep'],false)" />
+</td>
+<td><input type="checkbox" id="1st_pl_nom" value="мы" checked />
 <label for="1st_pl_nom">мы</label></td>
-<td><input type="checkbox" id="1st_pl_gen" value="" checked />
+<td><input type="checkbox" id="1st_pl_gen" value="нас" checked />
 <label for="1st_pl_gen">нас</label></td>
-<td><input type="checkbox" id="1st_pl_dat" value="" checked />
+<td><input type="checkbox" id="1st_pl_dat" value="нам" checked />
 <label for="1st_pl_dat">нам</label></td>
-<td><input type="checkbox" id="1st_pl_acc" value="" checked />
+<td><input type="checkbox" id="1st_pl_acc" value="нас" checked />
 <label for="1st_pl_acc">нас</label></td>
-<td><input type="checkbox" id="1st_pl_inst" value="" checked />
+<td><input type="checkbox" id="1st_pl_inst" value="нами" checked />
 <label for="1st_pl_inst">нами</label></td>
-<td><input type="checkbox" id="1st_pl_prep" value="" checked />
+<td><input type="checkbox" id="1st_pl_prep" value="нас" checked />
 <label for="1st_pl_prep">нас</label></td>
 </tr>
 <tr>
-<td><input type="checkbox" id="2nd_sg_nom" value="" checked />
+<td><input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['2nd_sg_nom','2nd_sg_gen','2nd_sg_dat','2nd_sg_acc','2nd_sg_inst','2nd_sg_prep'],true)" />
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['2nd_sg_nom','2nd_sg_gen','2nd_sg_dat','2nd_sg_acc','2nd_sg_inst','2nd_sg_prep'],false)" />
+</td>
+<td><input type="checkbox" id="2nd_sg_nom" value="ты" checked />
 <label for="2nd_sg_nom">ты</label></td>
-<td><input type="checkbox" id="2nd_sg_gen" value="" checked />
+<td><input type="checkbox" id="2nd_sg_gen" value="тебя" checked />
 <label for="2nd_sg_gen">тебя</label></td>
-<td><input type="checkbox" id="2nd_sg_dat" value="" checked />
+<td><input type="checkbox" id="2nd_sg_dat" value="тебе" checked />
 <label for="2nd_sg_dat">тебе</label></td>
-<td><input type="checkbox" id="2nd_sg_acc" value="" checked />
+<td><input type="checkbox" id="2nd_sg_acc" value="тебя" checked />
 <label for="2nd_sg_acc">тебя</label></td>
-<td><input type="checkbox" id="2nd_sg_inst" value="" checked />
+<td><input type="checkbox" id="2nd_sg_inst" value="тобой" checked />
 <label for="2nd_sg_inst">тобой</label></td>
-<td><input type="checkbox" id="2nd_sg_prep" value="" checked />
+<td><input type="checkbox" id="2nd_sg_prep" value="тобою" checked />
 <label for="2nd_sg_prep">тобою</label></td>
 </tr>
 <tr>
-<td><input type="checkbox" id="2nd_pl_nom" value="" checked />
+<td><input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['2nd_pl_nom','2nd_pl_gen','2nd_pl_dat','2nd_pl_acc','2nd_pl_inst','2nd_pl_prep'],true)" />
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['2nd_pl_nom','2nd_pl_gen','2nd_pl_dat','2nd_pl_acc','2nd_pl_inst','2nd_pl_prep'],false)" />
+</td>
+<td><input type="checkbox" id="2nd_pl_nom" value="вы" checked />
 <label for="2nd_pl_nom">вы</label></td>
-<td><input type="checkbox" id="2nd_pl_gen" value="" checked />
+<td><input type="checkbox" id="2nd_pl_gen" value="вас" checked />
 <label for="2nd_pl_gen">вас</label></td>
-<td><input type="checkbox" id="2nd_pl_dat" value="" checked />
+<td><input type="checkbox" id="2nd_pl_dat" value="вам" checked />
 <label for="2nd_pl_dat">вам</label></td>
-<td><input type="checkbox" id="2nd_pl_acc" value="" checked />
+<td><input type="checkbox" id="2nd_pl_acc" value="вас" checked />
 <label for="2nd_pl_acc">вас</label></td>
-<td><input type="checkbox" id="2nd_pl_inst" value="" checked />
+<td><input type="checkbox" id="2nd_pl_inst" value="вами" checked />
 <label for="2nd_pl_inst">вами</label></td>
-<td><input type="checkbox" id="2nd_pl_prep" value="" checked />
+<td><input type="checkbox" id="2nd_pl_prep" value="вас" checked />
 <label for="2nd_pl_prep">вас</label></td>
 </tr>
 <tr>
-<td><input type="checkbox" id="3rd_m_sg_nom" value="" checked />
+<td><input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['3rd_m_sg_nom','3rd_m_sg_gen','3rd_m_sg_dat','3rd_m_sg_acc','3rd_m_sg_inst','3rd_m_sg_prep'],true)" />
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['3rd_m_sg_nom','3rd_m_sg_gen','3rd_m_sg_dat','3rd_m_sg_acc','3rd_m_sg_inst','3rd_m_sg_prep'],false)" />
+</td>
+<td><input type="checkbox" id="3rd_m_sg_nom" value="он" checked />
 <label for="3rd_m_sg_nom">он</label></td>
-<td><input type="checkbox" id="3rd_m_sg_gen" value="" checked />
+<td><input type="checkbox" id="3rd_m_sg_gen" value="его" checked />
 <label for="3rd_m_sg_gen">его</label></td>
-<td><input type="checkbox" id="3rd_m_sg_dat" value="" checked />
+<td><input type="checkbox" id="3rd_m_sg_dat" value="ему" checked />
 <label for="3rd_m_sg_dat">ему</label></td>
-<td><input type="checkbox" id="3rd_m_sg_acc" value="" checked />
+<td><input type="checkbox" id="3rd_m_sg_acc" value="его" checked />
 <label for="3rd_m_sg_acc">его</label></td>
-<td><input type="checkbox" id="3rd_m_sg_inst" value="" checked />
+<td><input type="checkbox" id="3rd_m_sg_inst" value="им" checked />
 <label for="3rd_m_sg_inst">им</label></td>
-<td><input type="checkbox" id="3rd_m_sg_prep" value="" checked />
+<td><input type="checkbox" id="3rd_m_sg_prep" value="нём" checked />
 <label for="3rd_m_sg_prep">нём</label></td>
 </tr>
 <tr>
-<td><input type="checkbox" id="3rd_f_sg_nom" value="" checked />
+<td><input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['3rd_f_sg_nom','3rd_f_sg_gen','3rd_f_sg_dat','3rd_f_sg_acc','3rd_f_sg_inst_1','3rd_f_sg_inst_2','3rd_f_sg_prep'],true)" />
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['3rd_f_sg_nom','3rd_f_sg_gen','3rd_f_sg_dat','3rd_f_sg_acc','3rd_f_sg_inst_1','3rd_f_sg_inst_2','3rd_f_sg_prep'],false)" />
+</td>
+<td><input type="checkbox" id="3rd_f_sg_nom" value="она" checked />
 <label for="3rd_f_sg_nom">она</label></td>
-<td><input type="checkbox" id="3rd_f_sg_gen" value="" checked />
+<td><input type="checkbox" id="3rd_f_sg_gen" value="её" checked />
 <label for="3rd_f_sg_gen">её</label></td>
-<td><input type="checkbox" id="3rd_f_sg_dat" value="" checked />
+<td><input type="checkbox" id="3rd_f_sg_dat" value="ей" checked />
 <label for="3rd_f_sg_dat">ей</label></td>
-<td><input type="checkbox" id="3rd_f_sg_acc" value="" checked />
+<td><input type="checkbox" id="3rd_f_sg_acc" value="её" checked />
 <label for="3rd_f_sg_acc">её</label></td>
-<td><input type="checkbox" id="3rd_f_sg_inst_1" value="" checked />
+<td><input type="checkbox" id="3rd_f_sg_inst_1" value="ей" checked />
 <label for="3rd_f_sg_inst_1">ей</label> /
-<input type="checkbox" id="3rd_f_sg_inst_2" value="" checked />
+<input type="checkbox" id="3rd_f_sg_inst_2" value="ею" checked />
 <label for="3rd_f_sg_inst_2">ею</label></td>
-<td><input type="checkbox" id="3rd_f_sg_prep" value="" checked />
+<td><input type="checkbox" id="3rd_f_sg_prep" value="ней" checked />
 <label for="3rd_f_sg_prep">ней</label></td>
 </tr>
 <tr>
-<td><input type="checkbox" id="3rd_n_sg_nom" value="" checked />
+<td><input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['3rd_n_sg_nom','3rd_n_sg_gen','3rd_n_sg_dat','3rd_n_sg_acc','3rd_n_sg_inst','3rd_n_sg_prep'],true)" />
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['3rd_n_sg_nom','3rd_n_sg_gen','3rd_n_sg_dat','3rd_n_sg_acc','3rd_n_sg_inst','3rd_n_sg_prep'],false)" />
+</td>
+<td><input type="checkbox" id="3rd_n_sg_nom" value="оно" checked />
 <label for="3rd_n_sg_nom">оно</label></td>
-<td><input type="checkbox" id="3rd_n_sg_gen" value="" checked />
+<td><input type="checkbox" id="3rd_n_sg_gen" value="его" checked />
 <label for="3rd_n_sg_gen">его</label></td>
-<td><input type="checkbox" id="3rd_n_sg_dat" value="" checked />
+<td><input type="checkbox" id="3rd_n_sg_dat" value="ему" checked />
 <label for="3rd_n_sg_dat">ему</label></td>
-<td><input type="checkbox" id="3rd_n_sg_acc" value="" checked />
+<td><input type="checkbox" id="3rd_n_sg_acc" value="его" checked />
 <label for="3rd_n_sg_acc">его</label></td>
-<td><input type="checkbox" id="3rd_n_sg_inst" value="" checked />
+<td><input type="checkbox" id="3rd_n_sg_inst" value="им" checked />
 <label for="3rd_n_sg_inst">им</label></td>
-<td><input type="checkbox" id="3rd_n_sg_prep" value="" checked />
+<td><input type="checkbox" id="3rd_n_sg_prep" value="нём" checked />
 <label for="3rd_n_sg_prep">нём</label></td>
 </tr>
 <tr>
-<td><input type="checkbox" id="3rd_pl_nom" value="" checked />
+<td><input type="button" value="Check" data-ja-value="一括選択" data-en-value="Check" onclick="COM_FUNC.set_at_once(['3rd_pl_nom','3rd_pl_gen','3rd_pl_dat','3rd_pl_acc','3rd_pl_inst','3rd_pl_prep'],true)" />
+<input type="button" value="Uncheck" data-ja-value="一括選択解除" data-en-value="Uncheck" onclick="COM_FUNC.set_at_once(['3rd_pl_nom','3rd_pl_gen','3rd_pl_dat','3rd_pl_acc','3rd_pl_inst','3rd_pl_prep'],false)" />
+</td>
+<td><input type="checkbox" id="3rd_pl_nom" value="они" checked />
 <label for="3rd_pl_nom">они</label></td>
-<td><input type="checkbox" id="3rd_pl_gen" value="" checked />
+<td><input type="checkbox" id="3rd_pl_gen" value="их" checked />
 <label for="3rd_pl_gen">их</label></td>
-<td><input type="checkbox" id="3rd_pl_dat" value="" checked />
+<td><input type="checkbox" id="3rd_pl_dat" value="им" checked />
 <label for="3rd_pl_dat">им</label></td>
-<td><input type="checkbox" id="3rd_pl_acc" value="" checked />
+<td><input type="checkbox" id="3rd_pl_acc" value="их" checked />
 <label for="3rd_pl_acc">их</label></td>
-<td><input type="checkbox" id="3rd_pl_inst" value="" checked />
+<td><input type="checkbox" id="3rd_pl_inst" value="ими" checked />
 <label for="3rd_pl_inst">ими</label></td>
-<td><input type="checkbox" id="3rd_pl_prep" value="" checked />
+<td><input type="checkbox" id="3rd_pl_prep" value="них" checked />
 <label for="3rd_pl_prep">них</label></td>
 </tr>
 </table>

@@ -10,14 +10,12 @@ var ZH = {
 shi_de : function(idx) {
   const sent=DAT.sentences[idx];
 
-  const RE = /[^但]是.+的/g;
+  const RE = /[^但]是.+的/;
   if (RE.test(sent)) {
-    console.log(DAT.id_tags[idx] + RE.lastIndex);
     // 「但是」以外の「是」の後に「的」があれば、「是〜的」を強調。
     // なおこの「是」は文頭ではない。
     return(sent.replace(/(是[^是的]+的)/g, "<em>$1</em>"));
   } else {
-    console.log(DAT.id_tags[idx] + RE.lastIndex);
     // 文頭から「是〜的」が始まっていれば、その「是〜的」を強調。
     return(sent.replace(/^(是[^是的]+的)/g, "<em>$1</em>"));
   }
