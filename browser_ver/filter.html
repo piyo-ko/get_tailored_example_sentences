@@ -7,6 +7,7 @@
 <title>Let's get your tailored example sentences for learning a foreign language! / 自分向けの例文を抽出しよう!</title>
 <script type="text/javascript" src="general_preprocess.js"></script>
 <script type="text/javascript" src="zh_filters.js"></script>
+<script type="text/javascript" src="ru_filters.js"></script>
 </head>
 <body>
 <form name="f">
@@ -76,20 +77,20 @@
 <span class="ui" lang="ja">フィルタをかける対象:</span>
 <span class="ui" lang="en">The target set of sentences to which a selected filter will be applied is:<br></span>
 
-<label for="use_whole_sentences">
 <input type="radio" name="base_set" value="whole" id="use_whole_sentences" checked />
+<label for="use_whole_sentences">
 <span class="ui" lang="ja">すべての文</span>
 <span class="ui" lang="en">whole sentences<br></span>
 </label>
 
-<label for="use_length_limited_sentences">
 <input type="radio" name="base_set" value="len_lim" id="use_length_limited_sentences" disabled />
+<label for="use_length_limited_sentences">
 <span class="ui" lang="ja">長さを制限した文</span>
 <span class="ui" lang="en">length-limited sentences<br></span>
 </label>
 
-<label for="use_specific_pattern">
 <input type="radio" name="base_set" value="specific_pattern" id="use_specific_pattern" disabled />
+<label for="use_specific_pattern">
 <span class="ui" lang="ja">フィルタで直近に抽出済みの特定の表現を含む文</span>
 <span class="ui" lang="en">sentences including the specific pattern that has last been extracted by the filter you selected</span>
 </label>
@@ -120,7 +121,7 @@
 </select>
 <span class="ui" lang="ja">を</span>
 <span class="ui" lang="en">be </span>
-<input type="button" value="extracted" data-en-value="extracted" data-ja-value="抽出する" onclick="COM_FUNC.call_filter_of('zh_filters')">
+<input type="button" value="extracted" data-en-value="extracted" data-ja-value="抽出する" onclick="COM_FUNC.call_filter_of('zh_filters',true)">
 <span class="ui" lang="ja">。</span>
 <span class="ui" lang="en">.</span>
 </p>
@@ -134,10 +135,10 @@
 <div id="Russian_block" style="display: none">
 <p>[TO DO] ここから先は、まだ動作しません! 入力フォームのみです!</p>
 <div>
-<input type="button" value="人称代名詞を抽出する" onclick="COM_FUNC.">
+<input type="button" value="人称代名詞を抽出する" onclick="COM_FUNC.call_filter_of('RU.pronouns',false)">
 (ただし同形のもの同士は区別できません)
 
-<table class="in" lang="ru">
+<table class="in" lang="ru" id="ru_pronouns">
 <tr>
 <th><span class="ui" lang="ja">主格</span><span class="ui" lang="en">nominative</span></th>
 <th><span class="ui" lang="ja">生格 (属格)</span><span class="ui" lang="en">genitive</span></th>
@@ -148,69 +149,118 @@
 </tr>
 
 <tr>
-<td><label for="1st_sg_nom"><input type="checkbox" id="1st_sg_nom" checked />я</label></td>
-<td><label for="1st_sg_gen"><input type="checkbox" id="1st_sg_gen" checked />меня</label></td>
-<td><label for="1st_sg_dat"><input type="checkbox" id="1st_sg_dat" checked />мне</label></td>
-<td><label for="1st_sg_acc"><input type="checkbox" id="1st_sg_acc" checked /></label>меня</td>
-<td><label for="1st_sg_inst"><input type="checkbox" id="1st_sg_inst" checked /></label>мной</td>
-<td><label for="1st_sg_prep"><input type="checkbox" id="1st_sg_prep" checked />мне</label></td>
+<td><input type="checkbox" id="1st_sg_nom" value="я" checked />
+<label for="1st_sg_nom">я</label></td>
+<td><input type="checkbox" id="1st_sg_gen" value="меня" checked />
+<label for="1st_sg_gen">меня</label></td>
+<td><input type="checkbox" id="1st_sg_dat" value="мне" checked />
+<label for="1st_sg_dat">мне</label></td>
+<td><input type="checkbox" id="1st_sg_acc" value="меня" checked />
+<label for="1st_sg_acc">меня</label></td>
+<td><input type="checkbox" id="1st_sg_inst" value="мной" checked />
+<label for="1st_sg_inst">мной</label></td>
+<td><input type="checkbox" id="1st_sg_prep" value="мне" checked />
+<label for="1st_sg_prep">мне</label></td>
 </tr>
 <tr>
-<td><label for="1st_pl_nom"><input type="checkbox" id="1st_pl_nom" checked />мы</label></td>
-<td><label for="1st_pl_gen"><input type="checkbox" id="1st_pl_gen" checked />нас</label></td>
-<td><label for="1st_pl_dat"><input type="checkbox" id="1st_pl_dat" checked />нам</label></td>
-<td><label for="1st_pl_acc"><input type="checkbox" id="1st_pl_acc" checked />нас</label></td>
-<td><label for="1st_pl_inst"><input type="checkbox" id="1st_pl_inst" checked />нами</label></td>
-<td><label for="1st_pl_prep"><input type="checkbox" id="1st_pl_prep" checked />нас</label></td>
+<td><input type="checkbox" id="1st_pl_nom" value="" checked />
+<label for="1st_pl_nom">мы</label></td>
+<td><input type="checkbox" id="1st_pl_gen" value="" checked />
+<label for="1st_pl_gen">нас</label></td>
+<td><input type="checkbox" id="1st_pl_dat" value="" checked />
+<label for="1st_pl_dat">нам</label></td>
+<td><input type="checkbox" id="1st_pl_acc" value="" checked />
+<label for="1st_pl_acc">нас</label></td>
+<td><input type="checkbox" id="1st_pl_inst" value="" checked />
+<label for="1st_pl_inst">нами</label></td>
+<td><input type="checkbox" id="1st_pl_prep" value="" checked />
+<label for="1st_pl_prep">нас</label></td>
 </tr>
 <tr>
-<td><label for="2nd_sg_nom"><input type="checkbox" id="2nd_sg_nom" checked />ты</label></td>
-<td><label for="2nd_sg_gen"><input type="checkbox" id="2nd_sg_gen" checked />тебя</label></td>
-<td><label for="2nd_sg_dat"><input type="checkbox" id="2nd_sg_dat" checked />тебе</label></td>
-<td><label for="2nd_sg_acc"><input type="checkbox" id="2nd_sg_acc" checked /></label>тебя</td>
-<td><label for="2nd_sg_inst"><input type="checkbox" id="2nd_sg_inst" checked /></label>тобой</td>
-<td><label for="2nd_sg_prep"><input type="checkbox" id="2nd_sg_prep" checked />тобою</label></td>
+<td><input type="checkbox" id="2nd_sg_nom" value="" checked />
+<label for="2nd_sg_nom">ты</label></td>
+<td><input type="checkbox" id="2nd_sg_gen" value="" checked />
+<label for="2nd_sg_gen">тебя</label></td>
+<td><input type="checkbox" id="2nd_sg_dat" value="" checked />
+<label for="2nd_sg_dat">тебе</label></td>
+<td><input type="checkbox" id="2nd_sg_acc" value="" checked />
+<label for="2nd_sg_acc">тебя</label></td>
+<td><input type="checkbox" id="2nd_sg_inst" value="" checked />
+<label for="2nd_sg_inst">тобой</label></td>
+<td><input type="checkbox" id="2nd_sg_prep" value="" checked />
+<label for="2nd_sg_prep">тобою</label></td>
 </tr>
 <tr>
-<td><label for="2nd_pl_nom"><input type="checkbox" id="2nd_pl_nom" checked />вы</label></td>
-<td><label for="2nd_pl_gen"><input type="checkbox" id="2nd_pl_gen" checked />вас</label></td>
-<td><label for="2nd_pl_dat"><input type="checkbox" id="2nd_pl_dat" checked />вам</label></td>
-<td><label for="2nd_pl_acc"><input type="checkbox" id="2nd_pl_acc" checked />вас</label></td>
-<td><label for="2nd_pl_inst"><input type="checkbox" id="2nd_pl_inst" checked />вами</label></td>
-<td><label for="2nd_pl_prep"><input type="checkbox" id="2nd_pl_prep" checked />вас</label></td>
+<td><input type="checkbox" id="2nd_pl_nom" value="" checked />
+<label for="2nd_pl_nom">вы</label></td>
+<td><input type="checkbox" id="2nd_pl_gen" value="" checked />
+<label for="2nd_pl_gen">вас</label></td>
+<td><input type="checkbox" id="2nd_pl_dat" value="" checked />
+<label for="2nd_pl_dat">вам</label></td>
+<td><input type="checkbox" id="2nd_pl_acc" value="" checked />
+<label for="2nd_pl_acc">вас</label></td>
+<td><input type="checkbox" id="2nd_pl_inst" value="" checked />
+<label for="2nd_pl_inst">вами</label></td>
+<td><input type="checkbox" id="2nd_pl_prep" value="" checked />
+<label for="2nd_pl_prep">вас</label></td>
 </tr>
 <tr>
-<td><label for="3rd_m_sg_nom"><input type="checkbox" id="3rd_m_sg_nom" checked />он</label></td>
-<td><label for="3rd_m_sg_gen"><input type="checkbox" id="3rd_m_sg_gen" checked />его</label></td>
-<td><label for="3rd_m_sg_dat"><input type="checkbox" id="3rd_m_sg_dat" checked />ему</label></td>
-<td><label for="3rd_m_sg_acc"><input type="checkbox" id="3rd_m_sg_acc" checked />его</label></td>
-<td><label for="3rd_m_sg_inst"><input type="checkbox" id="3rd_m_sg_inst" checked />им</label></td>
-<td><label for="3rd_m_sg_prep"><input type="checkbox" id="3rd_m_sg_prep" checked />нём</label></td>
+<td><input type="checkbox" id="3rd_m_sg_nom" value="" checked />
+<label for="3rd_m_sg_nom">он</label></td>
+<td><input type="checkbox" id="3rd_m_sg_gen" value="" checked />
+<label for="3rd_m_sg_gen">его</label></td>
+<td><input type="checkbox" id="3rd_m_sg_dat" value="" checked />
+<label for="3rd_m_sg_dat">ему</label></td>
+<td><input type="checkbox" id="3rd_m_sg_acc" value="" checked />
+<label for="3rd_m_sg_acc">его</label></td>
+<td><input type="checkbox" id="3rd_m_sg_inst" value="" checked />
+<label for="3rd_m_sg_inst">им</label></td>
+<td><input type="checkbox" id="3rd_m_sg_prep" value="" checked />
+<label for="3rd_m_sg_prep">нём</label></td>
 </tr>
 <tr>
-<td><label for="3rd_f_sg_nom"><input type="checkbox" id="3rd_f_sg_nom" checked />она</label></td>
-<td><label for="3rd_f_sg_gen"><input type="checkbox" id="3rd_f_sg_gen" checked />её</label></td>
-<td><label for="3rd_f_sg_dat"><input type="checkbox" id="3rd_f_sg_dat" checked /></label>ей</td>
-<td><label for="3rd_f_sg_acc"><input type="checkbox" id="3rd_f_sg_acc" checked />её</label></td>
-<td><label for="3rd_f_sg_inst_1"><input type="checkbox" id="3rd_f_sg_inst_1" checked />ей</label> /
-<label for="3rd_f_sg_inst_2"><input type="checkbox" id="3rd_f_sg_inst_2" checked />ею</label></td>
-<td><label for="3rd_f_sg_prep"><input type="checkbox" id="3rd_f_sg_prep" checked />ней</label></td>
+<td><input type="checkbox" id="3rd_f_sg_nom" value="" checked />
+<label for="3rd_f_sg_nom">она</label></td>
+<td><input type="checkbox" id="3rd_f_sg_gen" value="" checked />
+<label for="3rd_f_sg_gen">её</label></td>
+<td><input type="checkbox" id="3rd_f_sg_dat" value="" checked />
+<label for="3rd_f_sg_dat">ей</label></td>
+<td><input type="checkbox" id="3rd_f_sg_acc" value="" checked />
+<label for="3rd_f_sg_acc">её</label></td>
+<td><input type="checkbox" id="3rd_f_sg_inst_1" value="" checked />
+<label for="3rd_f_sg_inst_1">ей</label> /
+<input type="checkbox" id="3rd_f_sg_inst_2" value="" checked />
+<label for="3rd_f_sg_inst_2">ею</label></td>
+<td><input type="checkbox" id="3rd_f_sg_prep" value="" checked />
+<label for="3rd_f_sg_prep">ней</label></td>
 </tr>
 <tr>
-<td><label for="3rd_n_sg_nom"><input type="checkbox" id="3rd_n_sg_nom" checked />оно</label></td>
-<td><label for="3rd_n_sg_gen"><input type="checkbox" id="3rd_n_sg_gen" checked />его</label></td>
-<td><label for="3rd_n_sg_dat"><input type="checkbox" id="3rd_n_sg_dat" checked />ему</label></td>
-<td><label for="3rd_n_sg_acc"><input type="checkbox" id="3rd_n_sg_acc" checked />его</label></td>
-<td><label for="3rd_n_sg_inst"><input type="checkbox" id="3rd_n_sg_inst" checked />им</label></td>
-<td><label for="3rd_n_sg_prep"><input type="checkbox" id="3rd_n_sg_prep" checked />нём</label></td>
+<td><input type="checkbox" id="3rd_n_sg_nom" value="" checked />
+<label for="3rd_n_sg_nom">оно</label></td>
+<td><input type="checkbox" id="3rd_n_sg_gen" value="" checked />
+<label for="3rd_n_sg_gen">его</label></td>
+<td><input type="checkbox" id="3rd_n_sg_dat" value="" checked />
+<label for="3rd_n_sg_dat">ему</label></td>
+<td><input type="checkbox" id="3rd_n_sg_acc" value="" checked />
+<label for="3rd_n_sg_acc">его</label></td>
+<td><input type="checkbox" id="3rd_n_sg_inst" value="" checked />
+<label for="3rd_n_sg_inst">им</label></td>
+<td><input type="checkbox" id="3rd_n_sg_prep" value="" checked />
+<label for="3rd_n_sg_prep">нём</label></td>
 </tr>
 <tr>
-<td><label for="3rd_pl_nom"><input type="checkbox" id="3rd_pl_nom" checked />они</label></td>
-<td><label for="3rd_pl_gen"><input type="checkbox" id="3rd_pl_gen" checked /></label>их</td>
-<td><label for="3rd_pl_dat"><input type="checkbox" id="3rd_pl_dat" checked /></label>им</td>
-<td><label for="3rd_pl_acc"><input type="checkbox" id="3rd_pl_acc" checked /></label>их</td>
-<td><label for="3rd_pl_inst"><input type="checkbox" id="3rd_pl_inst" checked /></label>ими</td>
-<td><label for="3rd_pl_prep"><input type="checkbox" id="3rd_pl_prep" checked />них</label></td>
+<td><input type="checkbox" id="3rd_pl_nom" value="" checked />
+<label for="3rd_pl_nom">они</label></td>
+<td><input type="checkbox" id="3rd_pl_gen" value="" checked />
+<label for="3rd_pl_gen">их</label></td>
+<td><input type="checkbox" id="3rd_pl_dat" value="" checked />
+<label for="3rd_pl_dat">им</label></td>
+<td><input type="checkbox" id="3rd_pl_acc" value="" checked />
+<label for="3rd_pl_acc">их</label></td>
+<td><input type="checkbox" id="3rd_pl_inst" value="" checked />
+<label for="3rd_pl_inst">ими</label></td>
+<td><input type="checkbox" id="3rd_pl_prep" value="" checked />
+<label for="3rd_pl_prep">них</label></td>
 </tr>
 </table>
 </div>

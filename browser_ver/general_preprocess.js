@@ -217,9 +217,15 @@ COM_FUNC.constrain_num_of_words = function() {
 
 // A wrapper function that is called in order to apply a language-
 // specific filter.
-COM_FUNC.call_filter_of = function(filter_set_name) {
-  var op_list = document.getElementById(filter_set_name);
-  var filter_name = op_list.options[op_list.selectedIndex].value;
+COM_FUNC.call_filter_of = function(f_name, is_filter_in_listbox) {
+  var filter_name;
+  var em_tag = /<em>/;
+  if (is_filter_in_listbox) {
+    var op_list = document.getElementById(f_name);
+    filter_name = op_list.options[op_list.selectedIndex].value;
+  } else {
+    filter_name = f_name;
+  }
   for (var i = 0, N = DAT.sentences.length, str = "", c = 0; i < N; i++) {
     var check_sentence_result = eval(filter_name + "(" + i + ")" );
     if (check_sentence_result !== DAT.sentences[i]) {
@@ -230,6 +236,23 @@ COM_FUNC.call_filter_of = function(filter_set_name) {
   document.getElementById("output_area").innerHTML=str;
   COM_FUNC.reset_counter(c);
 };
+
+// Get an array of values of the checked checkboxes included in the element 
+// whose id attribute is group_element_id.
+// This can be used to extract the sentences that match any one of the 
+// words/prefixes/suffixes/phrases being selected (i.e., checked by checkboxes) 
+// from among listed ones.
+COM_FUNC.get_checked_values = function(group_element_id) {
+  var grp = document.getElementById(group_element_id);
+  var elm = grp.getElementsByTagName('input');
+  var keywords = [];
+  for (var i = 0, N = elm.length; i < N; i++) {
+    if (elm[i].getAttribute('type') == 'checkbox' && elm[i].checked) {
+      keywords.push(elm[i].value);
+    }
+  }
+  return(keywords);
+}
 
 // Switch the user interface (UI) language.
 COM_FUNC.set_UI_lang = function(lang_code) {
@@ -275,3 +298,13 @@ COM_FUNC.hide_or_display = function(divID) {
   }
 };
 
+/*
+function get_label_text() {
+  var e = document.getElementsByTagName('label');
+  for (var i = 0, N = e.length; i < N; i++) {
+    //console.log(i + ": " + e[i].innerHTML);
+    console.log(i + ": " + e[i].textContent);
+  }
+}
+//window.onload = get_label_text;
+*/
