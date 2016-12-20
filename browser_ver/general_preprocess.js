@@ -307,13 +307,3 @@ COM_FUNC.hide_or_display = function(divID) {
   }
 };
 
-/*
-function get_label_text() {
-  var e = document.getElementsByTagName('label');
-  for (var i = 0, N = e.length; i < N; i++) {
-    //console.log(i + ": " + e[i].innerHTML);
-    console.log(i + ": " + e[i].textContent);
-  }
-}
-//window.onload = get_label_text;
-*/
