@@ -75,4 +75,15 @@ As you will see in `filter/zh/*.sh` and `browser_ver/zh_filters.js`, only simple
 
 `filter/zh/*.sh` や `browser_ver/zh_filters.js` のとおり、単純な正規表現フィルタを使っているだけなので、自分用のフィルタを追加するのは簡単だと思います。
 
+# Extra feature / おまけ
+
+For Russian text, you can create an HTML file in which a link to [Wiktionary](https://en.wiktionary.org/wiki/) is embedded for each word.  The way to create such a file is as follows.
+
+ロシア語テキストに関しては、以下のようにすると、各単語に [Wiktionary](https://en.wiktionary.org/wiki/) へのリンクを埋め込んだ HTML ファイルを作れます。
+
+````
+$ preproc/numbering.pl < data/ru_split.txt > data/ru_formatted.txt
+$ preproc/make_links_to_dict.pl < data/ru_formatted.txt > data/ru.html
+````
+
 === End (終わり) ===

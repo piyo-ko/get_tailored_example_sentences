@@ -25,6 +25,17 @@ body {
   /*font-size: 160%;*/
 }
 
+a:link, a:visited {
+	color: hsl(210, 100%, 70%);
+}
+a:hover {
+  background: hsl(160, 100%, 20%);
+  color: white;
+}
+a.dict {
+  text-decoration: none;
+}
+
 h1 {
   font-size: large;
   color: hsl(270, 100%, 80%);
