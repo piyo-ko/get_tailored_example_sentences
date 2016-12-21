@@ -73,25 +73,23 @@ pronouns: function(idx) {
   return(this.check_exact_match(idx, 'ru_pronouns'));
 },
 
-/*
+
 // 文の数が多いと固まるのでやめた方がよい。
-wiktionary_link: function() {
-  document.getElementById("output_area").innerHTML="";
-  for (var i = 0, N = DAT.sentences.length; i < N; i++) {
-    var words = DAT.sentences[i].split(/\s+/);
-    var str = "";
-    for (var j = 0, L = words.length; j < L; j++) {
-      var dict_form = this.to_lowercase(words[j]);
-      if (dict_form == "") {
-        str += " " + words[j];
-      } else {
-        str += " <a href=\"https://en.wiktionary.org/wiki/" + encodeURIComponent(dict_form) + "#Russian\" class=\"dict\" target=\"_wikt\">" + words[j] + "</a>";
-      }
+wiktionary_link: function(idx) {
+  var words = DAT.sentences[idx].split(/\s+/);
+  var str = "";
+  for (var j = 0, L = words.length; j < L; j++) {
+    var dict_form = this.to_lowercase(words[j]);
+    if (dict_form == "") {
+      str += " " + words[j];
+    } else {
+      str += " <a href=\"https://en.wiktionary.org/wiki/" + encodeURIComponent(dict_form) + "#Russian\" class=\"dict\" target=\"_wikt\">" + words[j] + "</a>";
     }
-    document.getElementById("output_area").innerHTML += (DAT.id_tags[i] + str + "\n");
+  }
+  return(str);
   }
 }
-*/
+
 
 }; // end of the declaration of the global Object named RU
 
