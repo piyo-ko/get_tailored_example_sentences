@@ -226,12 +226,46 @@ COM_FUNC.call_filter_of = function(f_name, is_filter_in_listbox) {
   } else {
     filter_name = f_name;
   }
-  for (var i = 0, N = DAT.sentences.length, str = "", c = 0; i < N; i++) {
-    var check_sentence_result = eval(filter_name + "(" + i + ")" );
-    if (em_tag.test(check_sentence_result)) {
+  var base_type = document.f.base_set.value;
+  var i, N, L, str, c, elem;
+  N = DAT.sentences.length;
+  str = "";
+  c = 0;
+  if (base_type == 'specific_pattern') {
+    alert("The target is set to be the whole sentences.");
+  }
+  if (base_type == 'whole' || base_type == 'specific_pattern') {
+    // In this case, the potential base subset is to be newly set.
+    DAT.type_of_base_subset = 'pattern_specified';
+    elem = document.getElementById('use_specific_pattern');
+    elem.removeAttribute('disabled');
+    elem = document.getElementById('use_length_limited_sentences');
+    elem.setAttribute('disabled', 'disabled');
+
+    for (i = 0; i < N; i++) {
+      var check_sentence_result = eval(filter_name + "(" + i + ")" );
+      if (em_tag.test(check_sentence_result)) {
         str += (DAT.id_tags[i] + check_sentence_result + "\n");
         c++;
+        DAT.is_selected[i] = true;
+      } else {
+        DAT.is_selected[i] = false;
+      }
+      DAT.displayed_sentences[i] = check_sentence_result;
     }
+  } else if (DAT.type_of_base_subset == 'length_limited' && 
+             base_type == 'len_lim') {
+    for (i = 0; i < N; i++) {
+      if (DAT.is_selected[i]) { // a sentence whose length is as constrained
+        check_sentence_result = eval(filter_name + "(" + i + ")" );
+        if (em_tag.test(check_sentence_result)) {
+          str += (DAT.id_tags[i] + check_sentence_result + "\n");
+          c++;
+        }
+      }
+    }
+  } else {
+    alert("Oops! Something is wrong.\nAn error occurred at COM_FUNC.call_filter_of.");
   }
   document.getElementById("output_area").innerHTML=str;
   COM_FUNC.reset_counter(c);
