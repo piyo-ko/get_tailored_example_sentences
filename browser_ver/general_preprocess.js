@@ -305,7 +305,11 @@ COM_FUNC.set_UI_lang = function(lang_code) {
   var UI_text_blocks = document.getElementsByClassName('ui');
   for (i = 0, Ni = UI_text_blocks.length; i < Ni; i++) {
     if (UI_text_blocks[i].getAttribute('lang') == lang_code) {
-      UI_text_blocks[i].style.display = 'inline';
+      if (UI_text_blocks[i].tagName == 'P') {
+        UI_text_blocks[i].style.display = 'block';
+      } else {
+        UI_text_blocks[i].style.display = 'inline';
+      }
     } else {
       UI_text_blocks[i].style.display = 'none';
     }
@@ -341,3 +345,11 @@ COM_FUNC.hide_or_display = function(divID) {
   }
 };
 
+COM_FUNC.toggle_help = function () {
+  var h = document.getElementById('help_txt').style;
+  if (h.display=='none') {
+    h.display='block';
+  } else {
+    h.display='none';
+  }
+};

@@ -28,8 +28,8 @@ body {
 a:link, a:visited {
 	color: hsl(210, 100%, 70%);
 }
-a:hover {
-  background: hsl(160, 100%, 20%);
+a:hover, .call_help:hover {
+  background: hsl(130, 100%, 30%);
   color: white;
 }
 a.dict {
@@ -40,6 +40,10 @@ h1 {
   font-size: large;
   color: hsl(270, 100%, 80%);
   text-align: center;
+}
+div {
+  margin-top: 12pt;
+  margin-bottom: 12pt;
 }
 select {
   background: hsl(210, 80%, 80%);
@@ -78,17 +82,20 @@ p.out {
   margin-left: 2em;
   margin-right: 2em;
 }
+@media screen {
+  p.out {
+    max-height: 20em;
+    overflow: auto;
+  }
+}
 p.box {
   border: solid 1px hsl(270, 100%, 80%);
   padding: 4pt;
   margin-left: 2em;
   margin-right: 2em;
 }
-@media screen {
-  p.out {
-    max-height: 20em;
-    overflow: auto;
-  }
+.right {
+  text-align: right;
 }
 em {
   color: hsl(20, 100%, 70%);
@@ -109,11 +116,29 @@ input[type='checkbox'] {
 .ui:lang(en) {
   display: inline;
 }
+p.ui:lang(en) {
+  display: block;
+}
 .toggle {
   padding: 6pt;
   border: solid 1px hsl(30, 100%, 40%);
 }
 .toggle:hover {
   background: hsl(30, 100%, 13%);
+}
+div.help {
+  background: hsla(130, 100%, 15%, 1.0);
+  border: 4px dotted hsl(130, 100%, 50%);
+  border-radius: 40px;
+  color: hsl(130, 80%, 80%);
+  padding-left: 2em;
+  padding-right: 2em;
+  display: block;
+  position: fixed;
+  top: 2em;
+  left: 2em;
+  right: 2em;
+  bottom: 2em;
+  overflow: auto;
 }
 
