@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="filter_page.css" type="text/css">
+<link rel="canonical" href="https://piyo-ko.github.io/demo/get_tailored_example_sentences/Chinese_setting.html" />
+<base target="_top">
+<title>Let's get your tailored example sentences for learning a foreign language! / 自分向けの例文を抽出しよう!</title>
+<script type="text/javascript" src="zh_filters.js"></script>
+</head>
+
+<body class="setting">
+<!-- <h1>
+<span class="ui" lang="ja">中国語用フィルタ</span>
+<span class="ui" lang="en">Filters specific to Chinese</span>
+<span class="toggle" onclick="COM_FUNC.hide_or_display('Chinese_block')">📘⇄📖</span>
+</h1>
+-->
+<!-- <div id="Chinese_block"style="display: none"> -->
+
+<form>
+<p>
+<span class="ui" lang="en">Let </span>
+<select id="zh_filters">
+<option value="ZH.repetitive_question" data-en-value="interrogatives with a repetitive expression" data-ja-value="反復疑問文">interrogatives with a repetitive expression</option>
+<option value="ZH.le">「了」</option>
+<option value="ZH.shi_de">「是〜的」</option>
+<option value="ZH.you_you">「又〜又〜」</option>
+<option value="ZH.yue_yue">「越〜越〜」</option>
+<option value="ZH.numerical" data-en-value="numerical expressions" data-ja-value="数値表現">numerical expressions</option>
+<option value="ZH.passive" data-en-value="passive voice" data-ja-value="受け身">passive voice</option>
+</select>
+<span class="ui" lang="ja">を</span>
+<span class="ui" lang="en">be </span>
+<input type="button" value="extracted" data-en-value="extracted" data-ja-value="抽出する" onclick="window.parent.COM_FUNC.call_filter_of('zh_filters',true)">
+<span class="ui" lang="ja">。</span>
+<span class="ui" lang="en">.</span>
+</p>
+
+<!-- </div> -->
+</form>
+</body>
+</html>

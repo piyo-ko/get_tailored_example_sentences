@@ -25,6 +25,8 @@ var DAT = {
   num_of_chars : [],
   num_of_words_has_been_counted : false,
   num_of_chars_has_been_counted : false, 
+  // UI language
+  ui_lang : 'en',
   // When a new file is specified to be read, reset_all() should be executed.
   reset_all : function () {
     this.id_tags = [];
@@ -47,7 +49,7 @@ var COM_FUNC = {};
 COM_FUNC.read_in = function() {
   var reader = new FileReader();
   reader.onload = COM_FUNC.txt_loaded;
-  var input_file = document.getElementById("input_txt_file");
+  var input_file = window.top.document.getElementById("input_txt_file");
   reader.readAsText(input_file.files[0], "utf-8");
 };
 
@@ -62,20 +64,20 @@ COM_FUNC.txt_loaded = function(e) {
     DAT.sentences[i] = tmp[1];
     str += (DAT.id_tags[i] + DAT.sentences[i] + "\n");
   }
-  document.getElementById("output_area").innerHTML=str;
+  window.top.document.getElementById("output_area").innerHTML=str;
   COM_FUNC.reset_counter(N);
 };
 
 // Re-set the text counter.
 COM_FUNC.reset_counter = function(c) {
-  document.getElementById("sentence_counter").textContent = c;
+  window.top.document.getElementById("sentence_counter").textContent = c;
 };
 
 // Set the font used for the example sentences, depending on 
 // the language of them.  Note that filter_page.css defines some language-
 // dependent fonts.
 COM_FUNC.set_font = function(lang_name) {
-  document.getElementById("output_area").lang = lang_name;
+  window.top.document.getElementById("output_area").lang = lang_name;
 };
 
 // A somewhat general filter applicable to multiple languages.
@@ -84,9 +86,9 @@ COM_FUNC.set_font = function(lang_name) {
 // This is suitable for Chinese or Japanese text, which are written 
 // without whitespace characters between words.
 COM_FUNC.constrain_num_of_chars = function() {
-  var base_type = document.f.base_set.value;
-  var min_len=parseInt(document.f.min_chars.value);
-  var max_len=parseInt(document.f.max_chars.value);
+  var base_type = window.top.document.f.base_set.value;
+  var min_len=parseInt(window.top.document.f.min_chars.value);
+  var max_len=parseInt(window.top.document.f.max_chars.value);
   var i, N, L, str, c, elem;
   N = DAT.sentences.length;
   // If the number of characters of each sentence has not been counted yet,
@@ -112,9 +114,9 @@ COM_FUNC.constrain_num_of_chars = function() {
   if (base_type == 'whole' || base_type == 'len_lim') {
     // In this case, the potential base subset is to be newly set.
     DAT.type_of_base_subset = 'length_limited';
-    elem = document.getElementById('use_length_limited_sentences');
+    elem = window.top.document.getElementById('use_length_limited_sentences');
     elem.removeAttribute('disabled');
-    elem = document.getElementById('use_specific_pattern');
+    elem = window.top.document.getElementById('use_specific_pattern');
     elem.setAttribute('disabled', 'disabled');
 
     for (i = 0; i < N; i++) {
@@ -146,7 +148,7 @@ COM_FUNC.constrain_num_of_chars = function() {
   } else {
     alert("Oops! Something is wrong.\nAn error occurred at COM_FUNC.constrain_num_of_chars.");
   }
-  document.getElementById("output_area").innerHTML=str;
+  window.top.document.getElementById("output_area").innerHTML=str;
   COM_FUNC.reset_counter(c);
 };
 
@@ -156,9 +158,9 @@ COM_FUNC.constrain_num_of_chars = function() {
 // This is suitable for Russian, English, Germany, etc., which are written 
 // with whitespace characters between words.
 COM_FUNC.constrain_num_of_words = function() {
-  var base_type = document.f.base_set.value;
-  var min_len = parseInt(document.f.min_words.value);
-  var max_len = parseInt(document.f.max_words.value);
+  var base_type = window.top.document.f.base_set.value;
+  var min_len = parseInt(window.top.document.f.min_words.value);
+  var max_len = parseInt(window.top.document.f.max_words.value);
   var i, N, L, str, c, elem;
   N = DAT.sentences.length;
 
@@ -181,9 +183,9 @@ COM_FUNC.constrain_num_of_words = function() {
   }
   if (base_type == 'whole' || base_type == 'len_lim') {
     DAT.type_of_base_subset = 'length_limited';
-    elem = document.getElementById('use_length_limited_sentences');
+    elem = window.top.document.getElementById('use_length_limited_sentences');
     elem.removeAttribute('disabled');
-    elem = document.getElementById('use_specific_pattern');
+    elem = window.top.document.getElementById('use_specific_pattern');
     elem.setAttribute('disabled', 'disabled');
 
     for (i = 0; i < N; i++) {
@@ -211,7 +213,7 @@ COM_FUNC.constrain_num_of_words = function() {
   } else {
     alert("Oops! Something is wrong.\nAn error occurred at COM_FUNC.constrain_num_of_chars.");
   }
-  document.getElementById("output_area").innerHTML=str;
+  window.top.document.getElementById("output_area").innerHTML=str;
   COM_FUNC.reset_counter(c);
 };
 
@@ -221,14 +223,17 @@ COM_FUNC.call_filter_of = function(f_name, is_filter_in_listbox) {
   var filter_name;
   const em_tag = /<em>/;
   if (is_filter_in_listbox) {
-    var op_list = document.getElementById(f_name);
+    var op_list = window.top.document.getElementById('filter_setting').contentWindow.document.getElementById(f_name);
     filter_name = op_list.options[op_list.selectedIndex].value;
   } else {
     filter_name = f_name;
   }
-  var base_type = document.f.base_set.value;
+  //console.log("filter_name : " + filter_name);
+  var base_type = window.top.document.f.base_set.value;
+  //console.log("base_type: " + base_type);
   var i, N, L, str, c, elem;
   N = DAT.sentences.length;
+  //console.log("N = " + N);
   str = "";
   c = 0;
   if (base_type == 'specific_pattern') {
@@ -237,13 +242,14 @@ COM_FUNC.call_filter_of = function(f_name, is_filter_in_listbox) {
   if (base_type == 'whole' || base_type == 'specific_pattern') {
     // In this case, the potential base subset is to be newly set.
     DAT.type_of_base_subset = 'pattern_specified';
-    elem = document.getElementById('use_specific_pattern');
+    elem = window.top.document.getElementById('use_specific_pattern');
     elem.removeAttribute('disabled');
-    elem = document.getElementById('use_length_limited_sentences');
+    elem = window.top.document.getElementById('use_length_limited_sentences');
     elem.setAttribute('disabled', 'disabled');
 
     for (i = 0; i < N; i++) {
       var check_sentence_result = eval(filter_name + "(" + i + ")" );
+      //console.log(i + ": " + check_sentence_result);
       if (em_tag.test(check_sentence_result)) {
         str += (DAT.id_tags[i] + check_sentence_result + "\n");
         c++;
@@ -267,7 +273,7 @@ COM_FUNC.call_filter_of = function(f_name, is_filter_in_listbox) {
   } else {
     alert("Oops! Something is wrong.\nAn error occurred at COM_FUNC.call_filter_of.");
   }
-  document.getElementById("output_area").innerHTML=str;
+  window.top.document.getElementById("output_area").innerHTML=str;
   COM_FUNC.reset_counter(c);
 };
 
@@ -277,7 +283,7 @@ COM_FUNC.call_filter_of = function(f_name, is_filter_in_listbox) {
 // words/prefixes/suffixes/phrases being selected (i.e., checked by checkboxes) 
 // from among listed ones.
 COM_FUNC.get_checked_values = function(group_element_id) {
-  var grp = document.getElementById(group_element_id);
+  var grp = window.top.document.getElementById('filter_setting').contentWindow.document.getElementById(group_element_id);
   var elm = grp.getElementsByTagName('input');
   var keywords = [];
   for (var i = 0, N = elm.length; i < N; i++) {
@@ -293,16 +299,22 @@ COM_FUNC.get_checked_values = function(group_element_id) {
 // a boolean value.
 COM_FUNC.set_at_once = function(checkbox_ids, check_or_uncheck) {
   for (var i = 0, N = checkbox_ids.length; i < N; i++) {
-    document.getElementById(checkbox_ids[i]).checked = check_or_uncheck;
+    window.top.document.getElementById('filter_setting').contentWindow.document.getElementById(checkbox_ids[i]).checked = check_or_uncheck;
   }
 };
 
 // Switch the user interface (UI) language.
 COM_FUNC.set_UI_lang = function(lang_code) {
+  DAT.ui_lang = lang_code;
+  var docs = new Array(2);
+  docs[0] = window.top.document;
+  docs[1] = window.top.document.getElementById('filter_setting').contentWindow.document;
+  var d;
   var i, j, Ni, Nj, attName;
   attName = 'data-' + lang_code + '-value';
+for (d = 0; d <= 1; d++) {
   // for the text in <span class="ui" ...> tags
-  var UI_text_blocks = document.getElementsByClassName('ui');
+  var UI_text_blocks = docs[d].getElementsByClassName('ui');
   for (i = 0, Ni = UI_text_blocks.length; i < Ni; i++) {
     if (UI_text_blocks[i].getAttribute('lang') == lang_code) {
       if (UI_text_blocks[i].tagName == 'P') {
@@ -314,8 +326,9 @@ COM_FUNC.set_UI_lang = function(lang_code) {
       UI_text_blocks[i].style.display = 'none';
     }
   }
+
   // for the text displayed on <input type="button" ...>
-  var buttons = document.getElementsByTagName('input');
+  var buttons = docs[d].getElementsByTagName('input');
   for (i = 0, Ni = buttons.length; i < Ni; i++) {
     if (buttons[i].getAttribute('type') == 'button') {
       if (buttons[i].hasAttribute(attName)) {
@@ -323,8 +336,9 @@ COM_FUNC.set_UI_lang = function(lang_code) {
       }
     }
   }
+
   // for the text in <option> tags
-  var selectors = document.getElementsByTagName('select');
+  var selectors = docs[d].getElementsByTagName('select');
   for (i = 0, Ni = selectors.length; i < Ni; i++) {
     for (j = 0, Nj = selectors[i].options.length; j < Nj; j++) {
       var op = selectors[i].options[j];
@@ -333,10 +347,12 @@ COM_FUNC.set_UI_lang = function(lang_code) {
       }
     }
   }
+}
 };
 
 // Switch between the hidden state and the displayed state of 
 // the language-specific filters included in <div> tag identified by divID.
+/*
 COM_FUNC.hide_or_display = function(divID) {
   if (document.getElementById(divID).style.display=='none') {
     document.getElementById(divID).style.display='block';
@@ -344,12 +360,16 @@ COM_FUNC.hide_or_display = function(divID) {
     document.getElementById(divID).style.display='none';
   }
 };
-
+*/
 COM_FUNC.toggle_help = function () {
-  var h = document.getElementById('help_txt').style;
+  var h = window.top.document.getElementById('help_txt').style;
   if (h.display=='none') {
     h.display='block';
   } else {
     h.display='none';
   }
+};
+
+COM_FUNC.switch_setting_page = function(src_page) {
+  window.top.document.getElementById('filter_setting').src = src_page;
 };
