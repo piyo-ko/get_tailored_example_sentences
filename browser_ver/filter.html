@@ -7,8 +7,6 @@
 <base target="_top">
 <title>Let's get your tailored example sentences for learning a foreign language! / 自分向けの例文を抽出しよう!</title>
 <script type="text/javascript" src="general_preprocess.js"></script>
-<script type="text/javascript" src="zh_filters.js"></script>
-<script type="text/javascript" src="ru_filters.js"></script>
 </head>
 
 <body>
@@ -157,8 +155,8 @@ User Interface:
 <p id="output_area" class="out"><!--この中を動的に書き換える--></p>
 
 <p>
-[<span class="sw_setting" lang="zh" onclick="COM_FUNC.switch_setting_page('Chinese_setting.html')">中文</span>]
-[<span class="sw_setting" lang="ru" onclick="COM_FUNC.switch_setting_page('Russian_setting.html')">Русский</span>]
+[<span class="sw_setting" lang="zh" onclick="COM_FUNC.switch_setting_page('Chinese_setting.html','zh_filters.js')">中文</span>]
+[<span class="sw_setting" lang="ru" onclick="COM_FUNC.switch_setting_page('Russian_setting.html','ru_filters.js')">Русский</span>]
 </p>
 
 </form>
