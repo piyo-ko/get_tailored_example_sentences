@@ -63,7 +63,7 @@ th, td {
 }
 th {
   font-weight: bold;
-  color: hsl(270, 100%, 80%);;
+  color: hsl(270, 100%, 80%);
 }
 
 
@@ -149,13 +149,9 @@ div.help {
 
 #filter_setting {
   margin-left: 0;
-  /*margin-right: 2vw;*/
   width: 96vw;
   min-height: 50vh;
-  /*min-height: 5em;*/
-  /*height: max-content;*/
   padding: 0;
-  /*border: solid 1px hsl(270, 100%, 80%);*/
   border: none;
 }
 
