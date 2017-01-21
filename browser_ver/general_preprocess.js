@@ -57,6 +57,11 @@ var DAT = DAT || {
   // ユーザ・インタフェイスに使っている言語 (英語 (デフォルト) か日本語)
   ui_lang : 'en',
 
+  // 単純にキーワードそのものと一致した部分を強調するだけのフィルタで使う
+  // ための、キーワードに対応する正規表現オブジェクトのリストの一時格納場所。
+  // 間に空白を置かず大文字・小文字の区別もない言語に向いている。
+  //REs_for_char_based_keywords : [],
+
   // When a new file is specified to be read, reset_all() should be executed.
   // 新たなファイルが読み取り対象として指定されたら、reset_all() が実行される。
   reset_all : function () {
@@ -361,23 +366,55 @@ COM_FUNC.constrain_num_of_words = function() {
 // A wrapper function that is called in order to apply a language-
 // specific filter.
 // 言語依存のフィルタを適用するために呼び出される、ラッパ関数。
-COM_FUNC.call_filter_of = function(f_name, is_filter_in_listbox) {
+// f_name: the name of a filter to be applied.
+// is_filter_in_listbox: true if the filter named f_name is that included in
+//    a listbox (i.e., a select element).
+// container_id: either one of f_name and container_id should be a non-empty 
+//    string.  If f_name is an empty string and container_id is not, this means
+//    that simple filtering by keywords in the HTML element whose id is 
+//    container_id should be done.
+// f_name: 適用したいフィルタ名
+// is_filter_in_listbox: それがリストボックス (select 要素) 内のフィルタなら真
+// container_id: f_name と container_id の一方のみが非空文字列とならねば
+//    ならない。f_name が空文字列で container_id が非空文字列の場合は、
+//    id が container_id であるような HTML 要素の中に含まれるキーワードによる
+//    単純なフィルタリングを行え、という意味。
+COM_FUNC.call_filter_of = function(f_name, is_filter_in_listbox, container_id) {
+  if ((f_name === '' && container_id === '') ||
+      (f_name !== '' && container_id !== '')) {
+    alert("Error in COM_FUNC.call_filter_of(" + f_name + ', ' + is_filter_in_listbox + ', ' + container_id + ')');
+    return;
+  }
   var filter_name;
   const em_tag = /<em>/;
-  if (is_filter_in_listbox) {
-    var op_list = window.top.document.getElementById('filter_setting').contentWindow.document.getElementById(f_name);
-    filter_name = op_list.options[op_list.selectedIndex].value;
+  if (f_name !== '') {
+    if (is_filter_in_listbox) {
+      var op_list = window.top.document.getElementById('filter_setting').contentWindow.document.getElementById(f_name);
+      filter_name = op_list.options[op_list.selectedIndex].value;
+    } else {
+      filter_name = f_name;
+    }
   } else {
-    filter_name = f_name;
+    filter_name = '';
+    //DAT.REs_for_char_based_keywords = [];
+    var REs_for_replacement = [];
+    var replacing_str = [];
+    var kw = this.get_checked_values(container_id);
+    var k, L;
+    for (k = 0, L = kw.length; k < L; k++) {
+      REs_for_replacement.push(new RegExp(kw[k], 'g'));
+      replacing_str.push('<em>' + kw[k] + '</em>');
+    }
   }
   //console.log("filter_name : " + filter_name);
   var base_type = window.top.document.f.base_set.value;
   //console.log("base_type: " + base_type);
-  var i, N, L, str, c, elem;
+  var i, N, str, c, elem;
   N = DAT.sentences.length;
   //console.log("N = " + N);
   str = "";
   c = 0;
+  var check_sentence_result;
   if (base_type == 'specific_pattern') {
     alert("The target is set to be the whole sentences.");
   }
@@ -391,7 +428,14 @@ COM_FUNC.call_filter_of = function(f_name, is_filter_in_listbox) {
     elem.setAttribute('disabled', 'disabled');
 
     for (i = 0; i < N; i++) {
-      var check_sentence_result = eval(filter_name + "(" + i + ")" );
+      if (filter_name !== '' ) {
+        check_sentence_result = eval(filter_name + "(" + i + ")" );
+      } else {
+        check_sentence_result = DAT.sentences[i];
+        for (k = 0; k < L; k++) {
+          check_sentence_result = check_sentence_result.replace(REs_for_replacement[k], replacing_str[k]);
+        }
+      }
       //console.log(i + ": " + check_sentence_result);
       if (em_tag.test(check_sentence_result)) {
         str += (DAT.id_tags[i] + check_sentence_result + "\n");
@@ -406,7 +450,14 @@ COM_FUNC.call_filter_of = function(f_name, is_filter_in_listbox) {
              base_type == 'len_lim') {
     for (i = 0; i < N; i++) {
       if (DAT.is_selected[i]) { // a sentence whose length is as constrained
-        check_sentence_result = eval(filter_name + "(" + i + ")" );
+        if (filter_name !== '' ) {
+          check_sentence_result = eval(filter_name + "(" + i + ")" );
+        } else {
+          check_sentence_result = DAT.sentences[i];
+          for (k = 0; k < L; k++) {
+            check_sentence_result = check_sentence_result.replace(REs_for_replacement[k], replacing_str[k]);
+          }
+        }
         if (em_tag.test(check_sentence_result)) {
           str += (DAT.id_tags[i] + check_sentence_result + "\n");
           c++;
@@ -476,6 +527,24 @@ COM_FUNC.set_grouped_items_at_once = function(container_id, check_or_uncheck) {
   //console.log("elm=" + elm);
   this.set_at_once(elm, check_or_uncheck);
 };
+/*
+COM_FUNC.check_keywords = function(idx) {
+  var str = DAT.sentences[idx];
+  for (var k = 0, L = this.keywords_list.length; k < L; k++) {
+    var RE = new RegExp(this.keywords_list[k], 'g');
+    str = str.replace(RE, '<em>' + this.keywords_list[k] + '</em>');
+  }
+  return(str);
+};
+COM_FUNC.filter_by_char_based_keywords = function(container_id) {
+  DAT.REs_for_char_based_keywords = [];
+  var kw = this.get_checked_values(container_id);
+  for (var k = 0, L = kw.length; k < L; k++) {
+    DAT.REs_for_char_based_keywords.push(new RegExp(kw[k], 'g');
+  }
+  this.call_filter_of('ZH.check_keywords',false);
+};
+*/
 
 // Switch the user interface (UI) language.
 // ユーザ・インタフェイス (UI) 用 言語を切り換える。

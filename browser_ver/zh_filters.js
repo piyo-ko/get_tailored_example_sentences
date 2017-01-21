@@ -69,8 +69,8 @@ passive : function(idx) {
 /*「了」*/
 le : function(idx) {
   return(DAT.sentences[idx].replace(/(了)/g, "<em>$1</em>"));
-},
-
+}//,
+/*
 keywords_list : [],
 check_keywords : function(idx) {
   //console.log("keywords_list=" + this.keywords_list);
@@ -89,6 +89,6 @@ filter_by_keywords: function(container_id) {
   this.keywords_list = window.parent.COM_FUNC.get_checked_values(container_id);
   window.parent.COM_FUNC.call_filter_of('ZH.check_keywords',false);
 }
-
+*/
 }; // end of the declaration of the global Object named ZH
 
