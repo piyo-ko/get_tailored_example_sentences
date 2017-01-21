@@ -67,8 +67,27 @@ passive : function(idx) {
 
 // Extracting sentences including the pattern of "了".
 /*「了」*/
-le : function(idx)  {
+le : function(idx) {
   return(DAT.sentences[idx].replace(/(了)/g, "<em>$1</em>"));
+},
+
+keywords_list : [],
+check_keywords : function(idx) {
+  //console.log("keywords_list=" + this.keywords_list);
+  var str = DAT.sentences[idx];
+  for (var k = 0, L = this.keywords_list.length; k < L; k++) {
+    //var RE = new RegExp('(' + this.keywords_list[k] + ')', 'g');
+    var RE = new RegExp(this.keywords_list[k], 'g');
+    //console.log("RE=" + RE.toString());
+    //str.replace(RE, "<em>$1</em>");
+    str = str.replace(RE, '<em>' + this.keywords_list[k] + '</em>');
+  }
+  //console.log(str);
+  return(str);
+},
+filter_by_keywords: function(container_id) {
+  this.keywords_list = window.parent.COM_FUNC.get_checked_values(container_id);
+  window.parent.COM_FUNC.call_filter_of('ZH.check_keywords',false);
 }
 
 }; // end of the declaration of the global Object named ZH

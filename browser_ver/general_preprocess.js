@@ -454,6 +454,29 @@ COM_FUNC.set_at_once = function(checkbox_ids, check_or_uncheck) {
   }
 };
 
+// Check or uncheck multiple checkboxes at once, where container_id is
+// the "id" attributes of an HTML element containing these checkboxes, and 
+// check_or_uncheck is a boolean value.
+// 複数のチェックボックスを、一括選択するか、または一括解除する。
+// なおここで、container_id は、それらのチェックボックスを包含する HTML 要素の
+// id 属性であり、check_or_uncheck は真偽値である。
+COM_FUNC.set_grouped_items_at_once = function(container_id, check_or_uncheck) {
+  var container = window.top.document.getElementById('filter_setting').contentWindow.document.getElementById(container_id);
+  //console.log("container_id=" + container_id);
+  //console.log("container=" + container);
+  var boxes = container.getElementsByTagName('input');
+  // a list of IDs of checkboxes to be checked or unchecked
+  var elm = [];
+  for (var i = 0, N = boxes.length; i < N; i++) {
+    //console.log("i=" + i + ", N=" + N);
+    if (boxes[i].getAttribute('type') == 'checkbox') {
+      elm.push(boxes[i].id);
+    }
+  }
+  //console.log("elm=" + elm);
+  this.set_at_once(elm, check_or_uncheck);
+};
+
 // Switch the user interface (UI) language.
 // ユーザ・インタフェイス (UI) 用 言語を切り換える。
 COM_FUNC.set_UI_lang = function(lang_code) {
